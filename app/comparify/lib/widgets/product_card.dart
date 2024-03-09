@@ -96,12 +96,13 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                                       .toList()
                               : print("Not in list");
                         }
+                        print(widget.item);
 
                         ref.watch(favouriteListProvider.notifier).state = [
                           ...ref.read(favouriteListProvider),
                           widget.item
                         ];
-                        print(ref.read(listProvider));
+                        print(ref.read(favouriteListProvider));
 
                         setState(() {
                           isFav = !isFav;
@@ -153,7 +154,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                               ...ref.read(listProvider),
                               widget.item
                             ];
-                            print(ref.read(favouriteListProvider));
+                            print(ref.read(listProvider));
 
                             setState(() {
                               isChecked = value!;

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:comparify/constants.dart';
 import 'package:comparify/models/product_item.dart';
+import 'package:comparify/screens/filterpage.dart';
 import 'package:comparify/server/product.dart';
 import 'package:comparify/widgets/product_card.dart';
 import 'package:flutter/material.dart';
@@ -11,18 +12,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
-List<ProductItem> indexList = [];
-
 final listProvider = StateProvider<List<ProductItem>>(
   (ref) {
+    List<ProductItem> indexList = [];
     return indexList;
   },
 );
 
-List<ProductItem> favouriteList = [];
-
 final favouriteListProvider = StateProvider<List<ProductItem>>(
   (ref) {
+    List<ProductItem> favouriteList = [];
+
     return favouriteList;
   },
 );
@@ -303,6 +303,7 @@ class _HomeState extends ConsumerState<Home> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -377,7 +378,7 @@ class _HomeState extends ConsumerState<Home> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: 8),
                   GestureDetector(
                     onTap: () async {
                       final returnedImage = await _pickImageFromCamera();
@@ -400,6 +401,39 @@ class _HomeState extends ConsumerState<Home> {
                       child: Icon(Icons.camera_alt_rounded, size: 32),
                     ),
                   ),
+                  IconButton(
+                      onPressed: () {
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        //   return const Filter();
+                        // }));
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            // final screenHeight = MediaQuery.of(context).size.height;
+                            // final modalHeight = screenHeight * 0.7; // set the height to 80% of the screen height
+
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Filter(
+                                  // callback: callback,
+                                  // low: lowVal,
+                                  // high: highVal,
+                                  // online: isOnline,
+                                  // offline: isOffline,
+                                  // mode: mode,
+                                  // isChanged: isChanged,
+                                  ),
+                            );
+                          },
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(size.width * 0.05),
+                                topRight: Radius.circular(size.width * 0.05)),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.filter_alt_sharp,
+                          color: Colors.black, size: 32)),
                 ],
               ),
 
