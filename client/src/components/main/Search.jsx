@@ -63,12 +63,11 @@ const Search = ({
   }, [data]);
 
   return (
-    <div className="w-full h-full px-16 pt-16 pb-10 overflow-y-auto gap-3">
+    <div className="w-full h-full pt-28 pb-10 overflow-y-auto gap-3">
       <div className="w-full h-full flex flex-col items-center justify-center">
-        <div className="h-36 w-full flex justify-between items-center">
+        <div className="h-36 w-[90%] rounded-xl px-16 bg-gradient-to-tl flex justify-between items-center">
           <div className="">
             <Input
-              label="Search"
               placeholder="Search for products"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -98,7 +97,7 @@ const Search = ({
             />
           </div>
         </div>
-        <div className="h-full w-full grid grid-cols-4 gap-5 overflow-y-auto p-2">
+        <div className="h-full w-full grid grid-cols-3 gap-14 overflow-y-auto px-32 py-8">
           {filterData?.map((item, index) => {
             return (
               <ProductCard
