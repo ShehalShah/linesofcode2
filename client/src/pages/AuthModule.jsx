@@ -40,9 +40,8 @@ const AuthModule = () => {
     <div className="w-full h-screen overflow-y-auto">
       <Navbar activeLink={activeLink} setActiveLink={setActiveLink} />
       <Banner />
-      <SplitSection startColor={"#6133B4"} endColor={"#432874"} />
       <MoreDetails />
-      <SplitSection startColor={"#432874"} endColor={"#36205D"} />
+      <SplitSection startColor={"#6133B4"} endColor={"#432874"} />
       <MobileApp />
     </div>
   );
