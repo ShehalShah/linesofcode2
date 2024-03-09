@@ -29,17 +29,28 @@ const ProductCard = ({ data }) => {
               ? Flipkart
               : AliExpress
           }
-          className="absolute -top-5 -left-5 w-[2.25rem] h-[2.25rem] rounded-full"
+          className="absolute -top-4 shadow-md shadow-gray-500 -left-4 w-[2.25rem] h-[2.25rem] rounded-full"
         />
       </div>
-      <div className="px-6 py-2">
-        <div className="font-bold text-sm mb-2">{title}</div>
+      <div className="px-6 h-32 py-2">
+        <div
+          style={{
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 4,
+            overflow: "hidden",
+            maxHeight: "7rem",
+          }}
+          className="font-bold text-sm mb-2"
+        >
+          {title}
+        </div>
       </div>
-      <div className="px-6 pb-2 w-full justify-evenly items-center">
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+      <div className="px-6 w-full justify-evenly items-center">
+        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
           {price}
         </span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
           <StarRatings
             rating={
               rating !== "No rating found" && rating

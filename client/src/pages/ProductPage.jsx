@@ -58,6 +58,10 @@ const ProductPage = () => {
     return randomUsernames[Math.floor(Math.random() * randomUsernames.length)];
   };
 
+  const removeReadMoreFromStrong = (text) => {
+    return text.replace(/READ MORE:/g, "");
+  };
+
   return (
     <div className="w-full h-full px-16 flex gap-2 items-center justify-center bg-gradient-to-tl">
       <div className="w-1/2 h-[70%] flex items-center justify-center">
@@ -84,7 +88,9 @@ const ProductPage = () => {
                   </div>
                   <div className="text-md ml-3">{getRandomUsername()}</div>
                 </div>
-                <div className="text-md">{review}</div>
+                <div className="text-md w-full">
+                  {removeReadMoreFromStrong(review)}
+                </div>
               </div>
             ))}
           </div>
