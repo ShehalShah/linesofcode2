@@ -39,7 +39,11 @@ const ProductCard = ({ data }) => {
         </span>
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
           <StarRatings
-            rating={2.5}
+            rating={
+              rating !== "No rating found" && rating
+                ? parseFloat(rating?.slice(0, 3))
+                : 0
+            }
             numberOfStars={5}
             starDimension="20px"
             starSpacing="2px"

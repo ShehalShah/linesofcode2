@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Home from "../components/main/Home";
 import Search from "../components/main/Search";
 import Favourite from "../components/main/Favourite";
-import Watch from "../components/main/Watch";
 import Navbar from "../components/main/Navbar";
 import app_api from "../config/ApiConfig";
 import toast from "react-hot-toast";
