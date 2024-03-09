@@ -1,5 +1,6 @@
 import 'package:comparify/models/product_item.dart';
 import 'package:comparify/screens/home.dart';
+import 'package:comparify/server/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,6 +24,9 @@ class _ProductCardState extends ConsumerState<ProductCard> {
       throw Exception('Could not launch $url');
     }
   }
+
+  Product productInstance = Product();
+  var result = "";
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +87,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                     // favourites icon
                     const Spacer(),
                     IconButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (isFav) {
                           ref.read(favouriteListProvider).contains(widget.item)
                               ? ref
@@ -96,12 +100,18 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                                       .toList()
                               : print("Not in list");
                         }
-                        print(widget.item);
+                        // print(widget.item);
 
-                        ref.watch(favouriteListProvider.notifier).state = [
-                          ...ref.read(favouriteListProvider),
-                          widget.item
-                        ];
+                        else {
+                          ref.watch(favouriteListProvider.notifier).state = [
+                            ...ref.read(favouriteListProvider),
+                            widget.item
+                          ];
+
+                          // store in db
+                          result = await productInstance.addFavourite(widget.item);
+                          print(result);
+                        }
                         print(ref.read(favouriteListProvider));
 
                         setState(() {
@@ -149,11 +159,12 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                                           (element) => element != widget.item)
                                       .toList()
                                   : print("Not in list");
+                            } else {
+                              ref.watch(listProvider.notifier).state = [
+                                ...ref.read(listProvider),
+                                widget.item
+                              ];
                             }
-                            ref.watch(listProvider.notifier).state = [
-                              ...ref.read(listProvider),
-                              widget.item
-                            ];
                             print(ref.read(listProvider));
 
                             setState(() {
