@@ -37,7 +37,7 @@ const AuthModule = () => {
       };
     }, []);
   return (
-    <div className="w-full h-screen overflow-y-auto">
+    <div className="w-full h-screen overflow-hidden">
       <Navbar activeLink={activeLink} setActiveLink={setActiveLink} />
       <Banner />
     </div>

@@ -3,7 +3,13 @@ import Select from "react-select";
 import ProductCard from "./ProductCard";
 import Input from "./Input";
 
-const Search = ({ data, search, setSearch }) => {
+const Search = ({
+  data,
+  search,
+  setSearch,
+  productsToCompare,
+  setProductsToCompare,
+}) => {
   const [filterData, setFilterData] = useState(data);
   const [company, setCompany] = useState("all");
   const [priceRange, setPriceRange] = useState({ min: 0, max: 100000 });
@@ -94,7 +100,14 @@ const Search = ({ data, search, setSearch }) => {
         </div>
         <div className="h-full w-full grid grid-cols-4 gap-5 overflow-y-auto p-2">
           {filterData?.map((item, index) => {
-            return <ProductCard key={index} data={item} />;
+            return (
+              <ProductCard
+                key={index}
+                data={item}
+                productsToCompare={productsToCompare}
+                setProductsToCompare={setProductsToCompare}
+              />
+            );
           })}
         </div>
       </div>
