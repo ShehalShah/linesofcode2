@@ -33,14 +33,8 @@ const Navbar = ({ activeLink, setActiveLink }) => {
           setActiveLink={setActiveLink}
         />
         <Link
-          name="Favourite Products"
+          name="Favourites"
           link="favourite"
-          activeLink={activeLink}
-          setActiveLink={setActiveLink}
-        />
-        <Link
-          name="Watch List"
-          link="watch"
           activeLink={activeLink}
           setActiveLink={setActiveLink}
         />

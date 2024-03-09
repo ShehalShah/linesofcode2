@@ -9,16 +9,19 @@ const Banner = () => {
   return (
     <div
       id="banner"
-      className="w-full relative h-screen px-16 flex items-center justify-evenly"
+      className="w-full relative h-screen px-16 bg-gradient-to-tl flex items-center justify-evenly"
     >
-      <img src={BannerImage} alt="" className="w-full absolute h-fit z-[-1]" />
+      <img
+        src={BannerImage}
+        alt=""
+        className="w-full absolute object-contain top-0 left-0 h-full z-[-1]"
+      />
       <div className="w-full h-full flex flex-col justify-center items-center relative">
         <img
           src={Illustration}
           alt=""
           className="w-[20rem] h-fit object-contain"
         />
-        <div className="text-5xl text-white font-semibold">Scrape it out</div>
       </div>
       <div className="w-full h-[27rem] shadow-lg shadow-[#531889] overflow-y-auto rounded-xl p-3 bg-white">
         {authType === "login" ? (
