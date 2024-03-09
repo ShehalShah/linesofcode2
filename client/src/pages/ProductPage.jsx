@@ -3,6 +3,10 @@ import { useLocation } from "react-router-dom";
 import app_api from "../config/ApiConfig";
 import StarRatings from "react-star-ratings";
 import Icons from "../components/Icons";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+// Access your API key as an environment variable (see "Set up your API key" above)
+const genAI = new GoogleGenerativeAI(import.meta.env.GEMINI_KEY);
 
 const ProductPage = () => {
   const location = useLocation();
@@ -18,7 +22,19 @@ const ProductPage = () => {
 
   useEffect(() => {
     getData();
+    fetchGem();
   }, [url]);
+
+  const fetchGem = async () => {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+
+    const prompt = "Write a story about a magic backpack."
+  
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    console.log(text);
+  };
 
   const processRating = (rating) => {
     if (rating !== "No rating found" && rating) {
