@@ -11,6 +11,31 @@ const router = express.Router();
 
 const IMGBB_API_KEY = 'af18f34deea279501ed6b09a0b78ce43';
 
+router.post('/watchlist', async (req, res) => {
+    const { userId } = req.body;
+
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    try {
+        // Find the user by ID
+        const user = await User.findByPk(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Retrieve the user's watchlist
+        const watchlist = user.watchlist || [];
+
+        res.json({ watchlist });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while retrieving user watchlist' });
+    }
+});
+
 
 router.post('/add-to-watchlist', async (req, res) => {
     const { userId, product } = req.body;
