@@ -1,4 +1,4 @@
-class Product {
+class ProductItem {
   final String title;
   final String url;
   final String price;
@@ -6,7 +6,7 @@ class Product {
   final String rating;
   final String from;
 
-  Product({
+  ProductItem({
     required this.title,
     required this.url,
     required this.price,

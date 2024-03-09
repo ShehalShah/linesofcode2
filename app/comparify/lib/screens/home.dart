@@ -1,21 +1,47 @@
-import 'package:comparify/constants.dart';
-import 'package:comparify/models/product.dart';
-import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'dart:convert';
+import 'dart:io';
 
-class Home extends StatefulWidget {
+import 'package:comparify/constants.dart';
+import 'package:comparify/models/product_item.dart';
+import 'package:comparify/screens/filterpage.dart';
+import 'package:comparify/server/product.dart';
+import 'package:comparify/widgets/product_card.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+
+import 'favourite.dart';
+
+final listProvider = StateProvider<List<ProductItem>>(
+  (ref) {
+    List<ProductItem> indexList = [];
+    return indexList;
+  },
+);
+
+final favouriteListProvider = StateProvider<List<ProductItem>>(
+  (ref) {
+    List<ProductItem> favouriteList = [];
+
+    return favouriteList;
+  },
+);
+
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends ConsumerState<Home> {
   TextEditingController searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   List allTopProducts = [
-    Product(
+    ProductItem(
       title: "Woven Kanjivaram Silk Blend, Jacquard Saree  (Dark Blue)",
       url:
           "https://www.flipkart.com/deal-day-woven-kanjivaram-silk-blend-jacquard-saree/p/itm6a58ec1ab1635?pid=SARFNSZJBTCFCBDQ&lid=LSTSARFNSZJBTCFCBDQWMVQHT&marketplace=flipkart&store=clo&srno=b_1_9&otracker=browse&fm=organic&iid=03accbec-5562-4c29-93be-536ba5bb9a20.SARFNSZJBTCFCBDQ.SEARCH&ppt=browse&ppn=browse&ssid=mec38pmsa80000001709994159120",
@@ -25,7 +51,7 @@ class _HomeState extends State<Home> {
       rating: "4.0",
       from: "flipkart",
     ),
-    Product(
+    ProductItem(
       title: "Men Solid Ankle Length  (Pack of 3)",
       url:
           "https://www.flipkart.com/brucella-men-solid-ankle-length/p/itm3fad9e61d0d6c?pid=SOCGWT2UFHY8VCAA&lid=LSTSOCGWT2UFHY8VCAAEBUAGG&marketplace=flipkart&store=clo&srno=b_1_8&otracker=browse&fm=organic&iid=en_OYuqP4c3pYHk-Or1jqOJHSppYQkmxKc_YEe1MpbTj6aV9-pHgAZ2o46S7REV0ONPI1YxFdgsRqFC25G3OGxJtQ%3D%3D&ppt=browse&ppn=browse&ssid=mec38pmsa80000001709994159120",
@@ -35,7 +61,7 @@ class _HomeState extends State<Home> {
       rating: "3.7",
       from: "flipkart",
     ),
-    Product(
+    ProductItem(
       title:
           "MY International Stainless Steel Blade System 450 ML Vegetable Chopper  (1)",
       url:
@@ -46,7 +72,7 @@ class _HomeState extends State<Home> {
       rating: "4.1",
       from: "flipkart",
     ),
-    Product(
+    ProductItem(
       title:
           "ANALOG DAY AND DATE WORKING DISPLAY BLUE DIAL&SILVER CHAIN WATCH Analog Watch - For Men D&D F95 BLUE SILVER CHAIN",
       url:
@@ -57,7 +83,7 @@ class _HomeState extends State<Home> {
       rating: "3.9",
       from: "flipkart",
     ),
-    Product(
+    ProductItem(
       title:
           "SIYARAM FASHION Decorative White Wallpaper  (77 cm x 70 cm, Pack of 10)",
       url:
@@ -68,7 +94,7 @@ class _HomeState extends State<Home> {
       rating: "4.7",
       from: "flipkart",
     ),
-    Product(
+    ProductItem(
       title:
           "DEKABR Loafers Shoes Men Spring Clasicc Vintage Comfy Flat Moccasin Fashion Men Slip-on Boat Shoes For Men Casual Shoes",
       url:
@@ -79,7 +105,7 @@ class _HomeState extends State<Home> {
       rating: "4.7",
       from: "aliexpress",
     ),
-    Product(
+    ProductItem(
       title:
           "230g American Men's 100% Cotton Oversized T-shirts Summer Quick Dry Tee Eco-friendly Screen Print Broadcloth Jersey Hip Hop Tops",
       url:
@@ -90,7 +116,7 @@ class _HomeState extends State<Home> {
       rating: "4.3",
       from: "aliexpress",
     ),
-    Product(
+    ProductItem(
       title:
           "Luxury Real PT950 Platinum Necklace Round 1 CT Moissanite Diamond Pendant Necklace For Women Wedding Party Bridal Fine Jewelry",
       url:
@@ -101,7 +127,7 @@ class _HomeState extends State<Home> {
       rating: "5.0",
       from: "aliexpress",
     ),
-    Product(
+    ProductItem(
       title:
           "Natural African Amethyst Silver Women's Ring 2.39 Carat Octagon Cut Purple Crystal Classic Design Women Birthday Christmas Gift",
       url:
@@ -112,7 +138,7 @@ class _HomeState extends State<Home> {
       rating: "4.7",
       from: "aliexpress",
     ),
-    Product(
+    ProductItem(
       title:
           "Stainless Steel Witch Knot Earrings for Women Celtic knot Hoop Earrings Fashion Gold Silver Color Ear Jewelry Christmas Gift",
       url:
@@ -123,7 +149,7 @@ class _HomeState extends State<Home> {
       rating: "4.3",
       from: "aliexpress",
     ),
-    Product(
+    ProductItem(
       title: "OnePlus Nord CE 3 Lite 5G (Pastel Lime, 8GB RAM, 128GB Storage)",
       url:
           "https://www.amazon.in/OnePlus-Nord-Pastel-128GB-Storage/dp/B0BY8JZ22K?ref=dlx_deals_gd_dcl_img_0_cd684552_dt_sl15_50",
@@ -132,7 +158,7 @@ class _HomeState extends State<Home> {
       rating: "4.2",
       from: "amazon",
     ),
-    Product(
+    ProductItem(
       title:
           "OnePlus Nord Buds 2 TWS in Ear Earbuds with Mic,Upto 25dB ANC 12.4mm Dynamic Titanium Drivers, Playback:Upto 36hr case, 4-Mic Design, IP55 Rating, Fast Charging [Thunder Gray]",
       url:
@@ -142,7 +168,7 @@ class _HomeState extends State<Home> {
       rating: "4.3",
       from: "amazon",
     ),
-    Product(
+    ProductItem(
       title:
           "Paradigm Pictures Wind Chimes for Home || Home Decor Items (Golden Color)",
       url:
@@ -152,7 +178,7 @@ class _HomeState extends State<Home> {
       rating: "4.3",
       from: "amazon",
     ),
-    Product(
+    ProductItem(
       title:
           "Kellogg's Oats, Rolled Oats, High in Protein and Fibre, Low in Sodium, 900g/990g Pack",
       url:
@@ -162,7 +188,7 @@ class _HomeState extends State<Home> {
       rating: "4.3",
       from: "amazon",
     ),
-    Product(
+    ProductItem(
       title: "Yamaha FS100C Acoustic Guitar, Natural",
       url:
           "https://www.amazon.in/Yamaha-FS100C-Acoustic-Guitar-Natural/dp/B08Z3DVN8N?ref_=Oct_DLandingS_D_9d7e6b78_5",
@@ -173,14 +199,113 @@ class _HomeState extends State<Home> {
     ),
   ];
 
-  Future<void> _launchUrl(String url) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      throw Exception('Could not launch $url');
+  File? selectedImage;
+  Product productcontroller = Product();
+  String title = '';
+  // Future<void> _uploadImageToServer(File imageFile) async {
+  //   try {
+  //     var url = Uri.parse(
+  //         "https://colback.adaptable.app/api/products/upload-imageonlytit");
+  //     print("1");
+
+  //     // Create a multipart request
+  //     var request = http.MultipartRequest('POST', url);
+  //     print("2");
+  //     http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+  //       'image',
+  //       imageFile.path,
+  //       contentType: MediaType("image", "*"),
+  //     );
+
+  //     // Add the image file to the request
+  //     request.files.add(multipartFile);
+  //     print("3");
+
+  //     // Send the request
+  //     var response = await request.send();
+  //     print("4");
+
+  //     // Read and print the response
+  //     var responseData = await response.stream.bytesToString();
+  //     title = responseData;
+
+  //     print("5");
+  //     print("Response: $responseData");
+  //     print("Status code: ${response.statusCode}");
+  //     // return responseData;
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  Future<String> _uploadImageToServer(
+    File image,
+    // int member,
+  ) async {
+    // try{}
+    print("request");
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse(
+          "http://colback.adaptable.app/api/products/upload-imageonlytit"),
+    );
+    print("request success");
+
+    print("multipart");
+
+    http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+      'image',
+      image.path,
+      // contentType: MediaType("image", "*"),
+    );
+
+    print("success");
+
+    print("request add");
+
+    request.files.add(
+      multipartFile,
+    );
+    print("success");
+
+    // request.files.add(
+    //   multipartFile,
+    // );
+    print("sending ");
+    var res = await request.send();
+    print("success");
+
+    var responseBody = await res.stream.bytesToString();
+    var response = jsonDecode(responseBody);
+    print(response);
+
+    if (res.statusCode == 200) {
+      // Handle success
+      // init(response);
+      title = response;
+      print('Form data submitted successfully');
+      return "Success";
+    } else {
+      // Handle error
+      print('Error submitting form data. Status code: ${res.statusCode}');
+      return "fail";
     }
+  }
+
+  Future _pickImageFromCamera() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (returnedImage == null) return;
+    selectedImage = File(returnedImage.path);
+    // _uploadImageToServer(selectedImage!);
+
+    return returnedImage;
   }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -205,6 +330,15 @@ class _HomeState extends State<Home> {
             radius: 24,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Favourite()));
+            },
+            icon: Icon(Icons.favorite_border_rounded),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -244,7 +378,7 @@ class _HomeState extends State<Home> {
                               controller: searchController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: "Search food, categories...",
+                                hintText: "Search",
                                 hintStyle: TextStyle(
                                   color: Colors.grey.withOpacity(0.8),
                                 ),
@@ -255,18 +389,66 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: 8),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () async {
+                      final returnedImage = await _pickImageFromCamera();
+
+                      if (returnedImage != null) {
+                        // String path = returnedImage!.path;
+                        // File file = File(path);
+                        // _uploadImageToServer(file);
+                        // List<String> words = title.split(" ");
+                        // String truncatedResponse =
+                        //     words.sublist(0, 3).join(" ");
+
+                        print("1");
+                        await productcontroller.getProduct("phone");
+                        print("2");
+                      }
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: Icon(Icons.camera),
+                      child: Icon(Icons.camera_alt_rounded, size: 32),
                     ),
                   ),
+                  IconButton(
+                      onPressed: () {
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        //   return const Filter();
+                        // }));
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            // final screenHeight = MediaQuery.of(context).size.height;
+                            // final modalHeight = screenHeight * 0.7; // set the height to 80% of the screen height
+
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Filter(
+                                  // callback: callback,
+                                  // low: lowVal,
+                                  // high: highVal,
+                                  // online: isOnline,
+                                  // offline: isOffline,
+                                  // mode: mode,
+                                  // isChanged: isChanged,
+                                  ),
+                            );
+                          },
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(size.width * 0.05),
+                                topRight: Radius.circular(size.width * 0.05)),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.filter_alt_sharp,
+                          color: Colors.black, size: 32)),
                 ],
               ),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: 32),
 
               // today's deals
               const Row(
@@ -304,103 +486,7 @@ class _HomeState extends State<Home> {
                     itemCount: allTopProducts.length,
                     itemBuilder: (context, index) {
                       var item = allTopProducts[index];
-                      return Stack(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 16),
-                            decoration: BoxDecoration(
-                              color: Colors.white70,
-                              borderRadius: BorderRadius.circular(16),
-                              border:
-                                  Border.all(color: Colors.black54, width: 1.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
-                                  blurRadius: 300,
-                                  spreadRadius: 2,
-                                  offset: Offset(8, 4),
-                                ),
-                              ],
-                            ),
-                            child: ListTile(
-                              onTap: () {
-                                // print("itemmmmmm");
-                                _launchUrl(item.url);
-                              },
-                              contentPadding: const EdgeInsets.all(16),
-                              leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(
-                                  item.image,
-                                  // scale: 1.2,
-                                  width: 80,
-                                  height: 200,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              title: Text(
-                                item.title,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 3,
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        item.price,
-                                        style: TextStyle(
-                                          color: Colors.grey[700],
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      // favourites icon
-                                      const Spacer(),
-                                      Icon(
-                                        Icons.favorite_border,
-                                        color: Colors.red[700],
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.star,
-                                          color: Colors.amber, size: 16),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                        item.rating,
-                                        style: const TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 0,
-                            left: 0,
-                            child: SizedBox(
-                              width: 48, // Adjust the width as needed
-                              height: 48, // Adjust the height as needed
-                              child: Image.asset(
-                                "assets/${item.from}.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
+                      return ProductCard(item: item);
                     },
                   ),
                 ),
