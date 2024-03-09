@@ -15,8 +15,11 @@ const MainModule = () => {
     const data = await app_api.post("products/search", {
       query: `${search}`,
     });
-    console.log("Data", data.data.combinedProducts);
-    setData(data.data.combinedProducts);
+    setData(
+      data.data.combinedProducts.filter(
+        (product) => product.title !== "No title found"
+      )
+    );
   }, 3000);
 
   useEffect(() => {
