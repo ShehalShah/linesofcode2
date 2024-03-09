@@ -11,6 +11,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
+import 'favourite.dart';
+
 List<ProductItem> indexList = [];
 
 final listProvider = StateProvider<List<ProductItem>>(
@@ -327,6 +329,15 @@ class _HomeState extends ConsumerState<Home> {
             radius: 24,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Favourite()));
+            },
+            icon: Icon(Icons.favorite_border_rounded),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

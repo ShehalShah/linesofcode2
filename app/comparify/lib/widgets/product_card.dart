@@ -114,7 +114,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 0),
                 Row(
                   children: [
                     const Icon(Icons.star, color: Colors.amber, size: 16),
