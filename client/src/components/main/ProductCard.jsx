@@ -3,14 +3,16 @@ import Amazon from "../../assets/amazon.png";
 import Flipkart from "../../assets/flipkart.png";
 import AliExpress from "../../assets/aliexpress.png";
 import StarRatings from "react-star-ratings";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ data }) => {
+  const navigate = useNavigate();
   const { title, image, url, price, rating, from } = data;
   return (
     <div
       className="w-full flex flex-col items-center justify-center h-96 rounded-lg bg-white overflow-hidden shadow-lg"
       onClick={() => {
-        window.open(url, "_blank");
+        navigate("/product", { state: { url } });
       }}
     >
       <div className="flex relative items-center rounded-lg bg-white shadow-lg shadow-gray-300 p-2 justify-center h-[175px] w-[85%]">
