@@ -1,5 +1,7 @@
 import 'package:comparify/constants.dart';
+import 'package:comparify/models/product.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,95 +12,405 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   TextEditingController searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  List allTopProducts = [
+    Product(
+      title: "Woven Kanjivaram Silk Blend, Jacquard Saree  (Dark Blue)",
+      url:
+          "https://www.flipkart.com/deal-day-woven-kanjivaram-silk-blend-jacquard-saree/p/itm6a58ec1ab1635?pid=SARFNSZJBTCFCBDQ&lid=LSTSARFNSZJBTCFCBDQWMVQHT&marketplace=flipkart&store=clo&srno=b_1_9&otracker=browse&fm=organic&iid=03accbec-5562-4c29-93be-536ba5bb9a20.SARFNSZJBTCFCBDQ.SEARCH&ppt=browse&ppn=browse&ssid=mec38pmsa80000001709994159120",
+      price: "₹559",
+      image:
+          "https://rukminim2.flixcart.com/image/832/832/k51cpe80/sari/b/d/q/free-banarasi-saree104-navy-deal-of-the-day-original-imafnt2vf7zgtjgv.jpeg?q=70&crop=false",
+      rating: "4.0",
+      from: "flipkart",
+    ),
+    Product(
+      title: "Men Solid Ankle Length  (Pack of 3)",
+      url:
+          "https://www.flipkart.com/brucella-men-solid-ankle-length/p/itm3fad9e61d0d6c?pid=SOCGWT2UFHY8VCAA&lid=LSTSOCGWT2UFHY8VCAAEBUAGG&marketplace=flipkart&store=clo&srno=b_1_8&otracker=browse&fm=organic&iid=en_OYuqP4c3pYHk-Or1jqOJHSppYQkmxKc_YEe1MpbTj6aV9-pHgAZ2o46S7REV0ONPI1YxFdgsRqFC25G3OGxJtQ%3D%3D&ppt=browse&ppn=browse&ssid=mec38pmsa80000001709994159120",
+      price: "₹224",
+      image:
+          "https://rukminim2.flixcart.com/image/832/832/xif0q/sock/o/o/n/free-socks-m-d4-brucella-original-imagwt2sa2jmwkez.jpeg?q=70&crop=false",
+      rating: "3.7",
+      from: "flipkart",
+    ),
+    Product(
+      title:
+          "MY International Stainless Steel Blade System 450 ML Vegetable Chopper  (1)",
+      url:
+          "https://www.flipkart.com/my-international-stainless-steel-blade-system-450-ml-vegetable-chopper/p/itmb8fe97df374d4?pid=CPRGGBFYMCP7TCC3&lid=LSTCPRGGBFYMCP7TCC3QWWHZT&marketplace=flipkart&q=todays+deals&store=search.flipkart.com&srno=s_1_27&otracker=search&otracker1=search&fm=Search&iid=f179763c-34ed-4cd4-b7a2-77646d751458.CPRGGBFYMCP7TCC3.SEARCH&ppt=sp&ppn=sp&ssid=rt6g6wm71c0000001709994397431&qH=579b34685bdf25e3",
+      price: "₹150",
+      image:
+          "https://rukminim2.flixcart.com/image/832/832/xif0q/chopper/f/f/5/ke-chopper-green-750ml-kridha-original-imaggbfykn2rsggt.jpeg?q=70&crop=false",
+      rating: "4.1",
+      from: "flipkart",
+    ),
+    Product(
+      title:
+          "ANALOG DAY AND DATE WORKING DISPLAY BLUE DIAL&SILVER CHAIN WATCH Analog Watch - For Men D&D F95 BLUE SILVER CHAIN",
+      url:
+          "https://www.flipkart.com/piraso-d-d-f95-blue-silver-chain-analog-day-date-working-display-dial-silver-watch-men/p/itm0ab734465b833?pid=WATGKYG5DHKMXG6V&lid=LSTWATGKYG5DHKMXG6VXBRDKZ&marketplace=flipkart&store=r18&srno=b_1_2&otracker=browse&fm=organic&iid=en_FvzM8GBbJDgoEMe9pYM7qIFnh9oH_ncqp4e3_b50YCpWT0DkssrN8fuQQFv4gk12DMjF4nnz5V9met5t3y5ZYg%3D%3D&ppt=browse&ppn=browse&ssid=zf2r293jv40000001709994172768",
+      price: "₹304",
+      image:
+          "https://rukminim2.flixcart.com/image/832/832/xif0q/watch/j/r/u/1-d-d-f95-blue-silver-chain-piraso-men-original-imagkyg5gxufh2cp.jpeg?q=70&crop=false",
+      rating: "3.9",
+      from: "flipkart",
+    ),
+    Product(
+      title:
+          "SIYARAM FASHION Decorative White Wallpaper  (77 cm x 70 cm, Pack of 10)",
+      url:
+          "https://www.flipkart.com/siyaram-fashion-decorative-white-wallpaper/p/itm810e2c258e592?pid=WLPGG4Z6DQFPVGYY&lid=LSTWLPGG4Z6DQFPVGYYBYSL7M&marketplace=flipkart&q=todays+deals&store=search.flipkart.com&srno=s_2_79&otracker=search&otracker1=search&fm=Search&iid=c71178f6-5661-401e-9ab3-a048bbc349c7.WLPGG4Z6DQFPVGYY.SEARCH&ppt=sp&ppn=sp&ssid=rt6g6wm71c0000001709994397431&qH=579b34685bdf25e3",
+      price: "₹1,490",
+      image:
+          "https://rukminim2.flixcart.com/image/832/832/xif0q/sticker/l/m/q/medium-3d-brick-wallpaper-for-wall-fks-bricks-white-5-flipkart-original-imag2craxxm3u5yv.jpeg?q=70&crop=false",
+      rating: "4.7",
+      from: "flipkart",
+    ),
+    Product(
+      title:
+          "DEKABR Loafers Shoes Men Spring Clasicc Vintage Comfy Flat Moccasin Fashion Men Slip-on Boat Shoes For Men Casual Shoes",
+      url:
+          "https://www.aliexpress.com/item/1005003962018760.html?spm=a2g0o.productlist.main.33.2f6aymExymExaC&algo_pvid=15847c8a-bf44-4e2d-9055-33829a0a0689&utparam-url=scene%3Asearch%7Cquery_from%3A",
+      price: "₹2,085.49",
+      image:
+          "https://ae01.alicdn.com/kf/Sa172315390d2431c99a80773d4a1ece30/DEKABR-Loafers-Shoes-Men-Spring-Clasicc-Vintage-Comfy-Flat-Moccasin-Fashion-Men-Slip-on-Boat-Shoes.jpg",
+      rating: "4.7",
+      from: "aliexpress",
+    ),
+    Product(
+      title:
+          "230g American Men's 100% Cotton Oversized T-shirts Summer Quick Dry Tee Eco-friendly Screen Print Broadcloth Jersey Hip Hop Tops",
+      url:
+          "https://www.aliexpress.com/item/1005006487185603.html?spm=a2g0o.productlist.main.11.2f6aymExymExaC&algo_pvid=15847c8a-bf44-4e2d-9055-33829a0a0689&utparam-url=scene%3Asearch%7Cquery_from%3A",
+      price: "₹411",
+      image:
+          "https://ae01.alicdn.com/kf/Sf3c1e3099a464a3d940fbb0f968a8231o/Mens-100-Comb-Cotton-Blank-Oversized-T-Shirt-Graphic-Big-And-Tall-Custom-Print-High-Street.jpg",
+      rating: "4.3",
+      from: "aliexpress",
+    ),
+    Product(
+      title:
+          "Luxury Real PT950 Platinum Necklace Round 1 CT Moissanite Diamond Pendant Necklace For Women Wedding Party Bridal Fine Jewelry",
+      url:
+          "https://www.aliexpress.com/item/1005005916327132.html?spm=a2g0o.productlist.main.59.2f6aymExymExaC&algo_pvid=15847c8a-bf44-4e2d-9055-33829a0a0689&utparam-url=scene%3Asearch%7Cquery_from%3A",
+      price: "₹8,558.60",
+      image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRg7QKtQu4A-P-IYoWlo4qhRj8opGRRMUkPBoxOvokHuFyu0o34x-RSFM18GWSrXSWNYcM",
+      rating: "5.0",
+      from: "aliexpress",
+    ),
+    Product(
+      title:
+          "Natural African Amethyst Silver Women's Ring 2.39 Carat Octagon Cut Purple Crystal Classic Design Women Birthday Christmas Gift",
+      url:
+          "https://www.aliexpress.com/item/1005001405124022.html?spm=a2g0o.productlist.main.65.2f6aymExymExaC&algo_pvid=15847c8a-bf44-4e2d-9055-33829a0a0689&utparam-url=scene%3Asearch%7Cquery_from%3A",
+      price: "₹1,736.72",
+      image:
+          "https://ae01.alicdn.com/kf/H7b7bec760b974d67acb10eb5ff023348Q/Natural-African-Amethyst-Silver-Women-s-Ring-2-39-Carat-Octagon-Cut-Purple-Crystal-Classic-Design.png",
+      rating: "4.7",
+      from: "aliexpress",
+    ),
+    Product(
+      title:
+          "Stainless Steel Witch Knot Earrings for Women Celtic knot Hoop Earrings Fashion Gold Silver Color Ear Jewelry Christmas Gift",
+      url:
+          "https://www.aliexpress.com/item/1005004881330052.html?spm=a2g0o.productlist.main.33.2f6a7Jod7JodUG&algo_pvid=e832cafe-d2a5-45f9-983a-449b912cfe0b&utparam-url=scene%3Asearch%7Cquery_from%3A",
+      price: "₹181.39",
+      image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd0HtU-0sHR-gBA9_4bJF5bK_eir7av8iv6X7nVhqxXFgIRpAUXVtSBeeUyoYO7hY7i2c",
+      rating: "4.3",
+      from: "aliexpress",
+    ),
+    Product(
+      title: "OnePlus Nord CE 3 Lite 5G (Pastel Lime, 8GB RAM, 128GB Storage)",
+      url:
+          "https://www.amazon.in/OnePlus-Nord-Pastel-128GB-Storage/dp/B0BY8JZ22K?ref=dlx_deals_gd_dcl_img_0_cd684552_dt_sl15_50",
+      price: "₹17,999",
+      image: "https://m.media-amazon.com/images/I/61QRgOgBx0L._SX679_.jpg",
+      rating: "4.2",
+      from: "amazon",
+    ),
+    Product(
+      title:
+          "OnePlus Nord Buds 2 TWS in Ear Earbuds with Mic,Upto 25dB ANC 12.4mm Dynamic Titanium Drivers, Playback:Upto 36hr case, 4-Mic Design, IP55 Rating, Fast Charging [Thunder Gray]",
+      url:
+          "https://www.amazon.in/OnePlus-Wireless-Earbuds-Titanium-Playback/dp/B0BYJ6ZMTS?ref_=Oct_DLandingS_D_3d028392_2",
+      price: "₹2,599",
+      image: "https://m.media-amazon.com/images/I/61-ZYvldY+L._SX679_.jpg",
+      rating: "4.3",
+      from: "amazon",
+    ),
+    Product(
+      title:
+          "Paradigm Pictures Wind Chimes for Home || Home Decor Items (Golden Color)",
+      url:
+          "https://www.amazon.in/Paradigm-Originals-Decoration-Positive-Balcony/dp/B074QMXCDQ?ref_=Oct_DLandingS_D_f6b1a791_71",
+      price: "₹793",
+      image: "https://m.media-amazon.com/images/I/71OmZf14VrL._SY879_.jpg",
+      rating: "4.3",
+      from: "amazon",
+    ),
+    Product(
+      title:
+          "Kellogg's Oats, Rolled Oats, High in Protein and Fibre, Low in Sodium, 900g/990g Pack",
+      url:
+          "https://www.amazon.in/Kelloggs-Rolled-Protein-Fibre-Sodium/dp/B0B15HXLHQ?ref_=Oct_DLandingS_D_5e21b606_13",
+      price: "₹151",
+      image: "https://m.media-amazon.com/images/I/81vL-XgBztL._SX679_.jpg",
+      rating: "4.3",
+      from: "amazon",
+    ),
+    Product(
+      title: "Yamaha FS100C Acoustic Guitar, Natural",
+      url:
+          "https://www.amazon.in/Yamaha-FS100C-Acoustic-Guitar-Natural/dp/B08Z3DVN8N?ref_=Oct_DLandingS_D_9d7e6b78_5",
+      price: "₹9,989",
+      image: "https://m.media-amazon.com/images/I/71nzdkpUcWL._SY879_.jpg",
+      rating: "4.1",
+      from: "amazon",
+    ),
+  ];
+
+  Future<void> _launchUrl(String url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Text(
-                "Hey ",
-                textScaleFactor: 1.15,
-              ),
-              // GetUserName(userID: user.uid),
-              Text(
-                "Het!",
-                textScaleFactor: 1.15,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          leading: Container(
-            padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
-            child: CircleAvatar(
-              backgroundImage: AssetImage('assets/avatar png.png'),
-              backgroundColor: const Color(0xFFDCE1FF).withOpacity(0.45),
-              radius: 24,
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Text(
+              "Hey ",
+              textScaleFactor: 1.15,
             ),
+            // GetUserName(userID: user.uid),
+            Text(
+              "Het!",
+              textScaleFactor: 1.15,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        leading: Container(
+          padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+          child: CircleAvatar(
+            backgroundImage: AssetImage('assets/avatar png.png'),
+            backgroundColor: const Color(0xFFDCE1FF).withOpacity(0.45),
+            radius: 24,
           ),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              children: [
-                SizedBox(height: 20),
-                // search and scan
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          // color: Colors.grey[100],
-                          border: Border.all(color: Colors.black),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.2),
-                              blurRadius: 200,
-                              spreadRadius: 2,
-                              offset: Offset(8, 4),
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Icon(Icons.search_rounded),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                controller: searchController,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "Search food, categories...",
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey.withOpacity(0.8),
-                                  ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+
+              // search and scan
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        // color: Colors.grey[100],
+                        border: Border.all(color: Colors.black),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            blurRadius: 200,
+                            spreadRadius: 2,
+                            offset: Offset(8, 4),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Icon(Icons.search_rounded),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: searchController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Search food, categories...",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey.withOpacity(0.8),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(width: 10),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Icon(Icons.camera),
-                      ),
+                  ),
+                  SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Icon(Icons.camera),
                     ),
-                  ],
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 40),
+
+              // today's deals
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Today's Deals",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  // Text(
+                  //   "See all",
+                  //   style: TextStyle(
+                  //     color: Pallete.primaryPurple,
+                  //     fontSize: 16,
+                  //   ),
+                  // ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              // vertical list of today's deals
+              Scrollbar(
+                controller: _scrollController,
+                thumbVisibility: true,
+                radius: const Radius.circular(4),
+                thickness: 4,
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.64,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: allTopProducts.length,
+                    itemBuilder: (context, index) {
+                      var item = allTopProducts[index];
+                      return Stack(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 16),
+                            decoration: BoxDecoration(
+                              color: Colors.white70,
+                              borderRadius: BorderRadius.circular(16),
+                              border:
+                                  Border.all(color: Colors.black54, width: 1.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  blurRadius: 300,
+                                  spreadRadius: 2,
+                                  offset: Offset(8, 4),
+                                ),
+                              ],
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                // print("itemmmmmm");
+                                _launchUrl(item.url);
+                              },
+                              contentPadding: const EdgeInsets.all(16),
+                              leading: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  item.image,
+                                  // scale: 1.2,
+                                  width: 80,
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              title: Text(
+                                item.title,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        item.price,
+                                        style: TextStyle(
+                                          color: Colors.grey[700],
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      // favourites icon
+                                      const Spacer(),
+                                      Icon(
+                                        Icons.favorite_border,
+                                        color: Colors.red[700],
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.star,
+                                          color: Colors.amber, size: 16),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        item.rating,
+                                        style: const TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            left: 0,
+                            child: SizedBox(
+                              width: 48, // Adjust the width as needed
+                              height: 48, // Adjust the height as needed
+                              child: Image.asset(
+                                "assets/${item.from}.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
-              ],
-            ),
+              ),
+
+              const SizedBox(height: 20),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
