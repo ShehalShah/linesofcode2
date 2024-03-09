@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:comparify/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:comparify/constants.dart';
 import 'package:comparify/screens/login.dart';
@@ -40,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (status == "Success") {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: ((context) => const Placeholder())));
+            MaterialPageRoute(builder: ((context) => const Home())));
       } else {
         MotionToast.error(
                 toastDuration: Duration(milliseconds: 500),
@@ -69,9 +70,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         width: double.infinity,
         decoration: BoxDecoration(
             gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-          Colors.green.shade500,
-          Colors.green.shade800,
-          Colors.green.shade400
+          Colors.deepPurple.shade300,
+          Colors.deepPurple.shade600,
+          Colors.deepPurple.shade900
         ])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   FadeInUp(
-                      duration: Duration(milliseconds: 1000),
+                      duration: Duration(milliseconds: 700),
                       child: Text(
                         "Sign Up",
                         style: TextStyle(color: Colors.white, fontSize: 40),
@@ -94,7 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 10,
                   ),
                   FadeInUp(
-                      duration: Duration(milliseconds: 1300),
+                      duration: Duration(milliseconds: 1000),
                       child: Text(
                         "Join the Food Truck family!",
                         style: TextStyle(color: Colors.white, fontSize: 18),
@@ -118,7 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               height: 60,
                             ),
                             FadeInUp(
-                                duration: Duration(milliseconds: 1400),
+                                duration: Duration(milliseconds: 1100),
                                 child: Column(
                                   children: <Widget>[
                                     Container(
@@ -212,7 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             //   height: 40,
                             // ),
                             FadeInUp(
-                                duration: Duration(milliseconds: 1600),
+                                duration: Duration(milliseconds: 1300),
                                 child: MaterialButton(
                                   onPressed: () {
                                     register(_name.text, _email.text,
@@ -221,7 +222,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                   height: 50,
                                   // margin: EdgeInsets.symmetric(horizontal: 50),
-                                  color: Colors.green[400],
+                                  color: Colors.deepPurple[400],
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50),
                                   ),
@@ -240,7 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               height: 50,
                             ),
                             FadeInUp(
-                                duration: Duration(milliseconds: 1500),
+                                duration: Duration(milliseconds: 1200),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -256,9 +257,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         ),
                                       ),
                                       child: Text(
-                                        'Sign In',
+                                        'Login',
                                         style: TextStyle(
-                                            color: Pallete.gradient3,
+                                            color: Pallete.linkBlue,
                                             fontSize: 16),
                                       ),
                                     )
