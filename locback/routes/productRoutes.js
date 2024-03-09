@@ -259,7 +259,12 @@ router.post('/search', async (req, res) => {
 
         // Scrape from Flipkart
         const flipkartUrl = `https://www.flipkart.com/search?q=${encodeURIComponent(query)}`;
-        const flipkartResponse = await axios.get(flipkartUrl)
+        const flipkartResponse = await axios.get(flipkartUrl, {
+            responseType: "arraybuffer",
+            headers: {
+                "Content-Type": "text/html; charset=UTF-8"
+            }
+        })
 
 
         const flipkartProducts = scrapeFlipkart(flipkartResponse.data);
