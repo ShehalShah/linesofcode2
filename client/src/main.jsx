@@ -5,8 +5,10 @@ import './index.css'
 import ToasterContext from './context/ToasterContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <>
     <ToasterContext />
     <App />
-  </React.StrictMode>,
+    </>
+  // </React.StrictMode>,
 )

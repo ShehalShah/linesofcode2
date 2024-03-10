@@ -4,8 +4,10 @@ import Frame19 from "../../assets/Frame19.svg";
 import Frame20 from "../../assets/Frame20.svg";
 import Frame21 from "../../assets/Frame21.svg";
 import Banner from "../../assets/IllusBanner.svg";
+import {useNavigate} from "react-router-dom"
 
 const Home = ({ setSearch, search, setActiveLink }) => {
+  const nav=useNavigate()
   const topdeals = [
     {
       "title": "Woven Kanjivaram Silk Blend, Jacquard Saree  (Dark Blue)",
@@ -156,6 +158,9 @@ const Home = ({ setSearch, search, setActiveLink }) => {
     .then(data => {
       // Handle response data
       console.log('Response:', data);
+      localStorage.setItem('watchlist', JSON.stringify(data));
+      nav("/image", { state: { data } });
+      // nav('/image')
     })
     .catch(error => {
       // Handle error

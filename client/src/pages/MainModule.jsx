@@ -7,11 +7,12 @@ import app_api from "../config/ApiConfig";
 import toast from "react-hot-toast";
 import { debounce } from "lodash";
 import { useNavigate } from "react-router-dom";
+import ImageAnalyzer from "./ImageAnalyzer";
 
 const MainModule = () => {
   const navigate = useNavigate();
   const [productsToCompare, setProductsToCompare] = useState([]);
-  const [activeLink, setActiveLink] = useState("home");
+  const [activeLink, setActiveLink] = useState("image");
   const [search, setSearch] = useState("house products");
   const [data, setData] = useState([]);
   const getData = debounce(async () => {
