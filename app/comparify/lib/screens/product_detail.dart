@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../models/product_item.dart';
 
+//
 class ProductDetail extends StatefulWidget {
   const ProductDetail({super.key, required this.item});
   final ProductItem item;
@@ -12,6 +13,7 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
+  // controller.getSingleProduct(url)
   List<Object> reviews = [
     "This is my first laptop gifted by my father so its a special one❤READ MORE: Good quality product",
     "I am using this laptop for coding. nice product 😍READ MORE: Just wow!",
@@ -25,6 +27,17 @@ class _ProductDetailState extends State<ProductDetail> {
   ];
 
   final ScrollController _scrollController = ScrollController();
+  Product controller = Product();
+  Map<String, dynamic> decoded = {};
+  @override
+  void initState() {
+    // TODO: implement initState
+    controller.getSingleProduct(widget.item.url).then((value) {
+      decoded = value;
+      print("HELLO+${decoded}");
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,21 +125,37 @@ class _ProductDetailState extends State<ProductDetail> {
                 thumbVisibility: true,
                 radius: const Radius.circular(4),
                 thickness: 4,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  controller: _scrollController,
-                  itemCount: reviews.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        reviews[index].toString(),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    );
+                child: FutureBuilder<Map<String, dynamic>>(
+                  future: controller.getSingleProduct(widget.item.url),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    } else {
+                      final decoded = snapshot.data!;
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        controller: _scrollController,
+                        itemCount: decoded["reviews"].length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Text(
+                              decoded["reviews"][index].toString(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
               ),

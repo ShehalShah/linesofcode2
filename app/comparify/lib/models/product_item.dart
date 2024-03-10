@@ -5,6 +5,7 @@ class ProductItem {
   final String image;
   final String rating;
   final String from;
+  final List? reviews;
 
   ProductItem({
     required this.title,
@@ -13,6 +14,7 @@ class ProductItem {
     required this.image,
     required this.rating,
     required this.from,
+    this.reviews,
   });
     factory ProductItem.fromJson(Map<String, dynamic> json) {
     return ProductItem(
@@ -22,6 +24,7 @@ class ProductItem {
       price: json['price'],
       title: json['title'],
       rating: json['rating'],
+      reviews: json['reviews'],
     );
   }
 }
