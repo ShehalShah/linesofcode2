@@ -1,7 +1,9 @@
+import 'package:comparify/server/gemini.dart';
 import 'package:comparify/server/product.dart';
 import 'package:flutter/material.dart';
 
 import '../models/product_item.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 class ProductDetail extends StatefulWidget {
   const ProductDetail({super.key, required this.item});
@@ -12,7 +14,7 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-  List<Object> reviews = [
+  List<String> reviews = [
     "This is my first laptop gifted by my father so its a special one❤READ MORE: Good quality product",
     "I am using this laptop for coding. nice product 😍READ MORE: Just wow!",
     "GoodREAD MORE: Fabulous!",
@@ -25,6 +27,16 @@ class _ProductDetailState extends State<ProductDetail> {
   ];
 
   final ScrollController _scrollController = ScrollController();
+  // String insights = "";
+
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   setState(() async {
+  //     insights = await geminiInsight(widget.item.title, reviews);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
