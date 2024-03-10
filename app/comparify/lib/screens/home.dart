@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:comparify/constants.dart';
 import 'package:comparify/models/product_item.dart';
 import 'package:comparify/screens/filterpage.dart';
+import 'package:comparify/screens/search.dart';
 import 'package:comparify/server/product.dart';
 import 'package:comparify/widgets/product_card.dart';
 import 'package:flutter/material.dart';
@@ -319,6 +320,7 @@ class _HomeState extends ConsumerState<Home> {
 
   @override
   Widget build(BuildContext context) {
+    String text = searchController.text;
     List<ProductItem> filtered = ref.watch(topProductProvider);
     // print("hi+${filtered}");
 
@@ -394,6 +396,19 @@ class _HomeState extends ConsumerState<Home> {
                           ),
                           Expanded(
                             child: TextField(
+                              onSubmitted: (value) async {
+                                List<ProductItem> products =
+                                    await productcontroller.getProduct(value);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Searchscreen(
+                                              searchController:
+                                                  searchController,
+                                              userId: widget.userId,
+                                              searchResults: products,
+                                            )));
+                              },
                               controller: searchController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
