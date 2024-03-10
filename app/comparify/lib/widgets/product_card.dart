@@ -1,5 +1,6 @@
 import 'package:comparify/models/product_item.dart';
 import 'package:comparify/screens/home.dart';
+import 'package:comparify/screens/product_detail.dart';
 import 'package:comparify/server/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -156,7 +157,15 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                 child: Row(
                   children: [
                     GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ProductDetail(item: widget.item),
+                            ),
+                          );
+                        },
                         child: Text(
                           "View More",
                           style: TextStyle(
