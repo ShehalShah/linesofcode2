@@ -247,8 +247,8 @@ const ComparePage = () => {
         </div>
       </div>
       <div className="w-full pb-10 flex items-center justify-center">
-        <div class="bg-gray-100 h-fit w-[90%] border border-gray-300 rounded-lg p-6 mt-80">
-          <h2 class="text-3xl font-semibold mb-4">AI Generated Insights</h2>
+        <div className="bg-gray-100 h-fit w-[90%] border border-gray-300 rounded-lg p-6 mt-80">
+          <h2 className="text-3xl font-semibold mb-4">AI Generated Insights</h2>
           <div className="prose max-w-none">
             <ReactMarkdown>{ins}</ReactMarkdown>
           </div>

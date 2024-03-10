@@ -7,6 +7,7 @@ import app_api from "../config/ApiConfig";
 import toast from "react-hot-toast";
 import { debounce } from "lodash";
 import { useNavigate } from "react-router-dom";
+import ImageAnalyzer from "./ImageAnalyzer";
 
 const MainModule = () => {
   const navigate = useNavigate();
@@ -49,9 +50,15 @@ const MainModule = () => {
           />
         );
       case "favourite":
-        return <Favourite />;
+        return (
+          <Favourite
+            productsToCompare={productsToCompare}
+            setProductsToCompare={setProductsToCompare}
+          />
+        );
       default:
-        return <Home />;
+        return <Home setSearch={setSearch}
+        search={search} setActiveLink={setActiveLink}/>;
     }
   };
 

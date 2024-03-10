@@ -4,8 +4,13 @@ import Frame19 from "../../assets/Frame19.svg";
 import Frame20 from "../../assets/Frame20.svg";
 import Frame21 from "../../assets/Frame21.svg";
 import Banner from "../../assets/IllusBanner.svg";
+import {useNavigate} from "react-router-dom"
+import Amazon from "../../assets/amazon.png";
+import Flipkart from "../../assets/flipkart.png";
+import AliExpress from "../../assets/aliexpress.png";
 
 const Home = ({ setSearch, search, setActiveLink }) => {
+  const nav=useNavigate()
   const topdeals = [
     {
       "title": "Woven Kanjivaram Silk Blend, Jacquard Saree  (Dark Blue)",
@@ -156,6 +161,9 @@ const Home = ({ setSearch, search, setActiveLink }) => {
     .then(data => {
       // Handle response data
       console.log('Response:', data);
+      localStorage.setItem('watchlist', JSON.stringify(data));
+      nav("/image", { state: { data } });
+      // nav('/image')
     })
     .catch(error => {
       // Handle error
@@ -243,13 +251,24 @@ const Home = ({ setSearch, search, setActiveLink }) => {
         </div>
         <div className="overflow-auto flex flex-1 w-[61rem] gap-7">
           {topdeals.map((deal, index) => (
-            <div key={index} className="flex flex-col gap-2">
+            <div key={index} className="flex flex-col gap-2 relative">
               <div className="w-80 h-96 rounded-lg bg-[#B6B5B5] flex image-center justify-center">
                 <img src={deal.image} alt="" className="rounded-lg" />
               </div>
               <div className="font-semibold">{deal.title.split(' ').slice(0, 4).join(' ')}</div>
               <div className="font-semibold text-[#1E1E1E80]">{deal.price}</div>
+              <img
+          src={
+            deal.from === "amazon"
+              ? Amazon
+              : deal.from === "flipkart"
+              ? Flipkart
+              : AliExpress
+          }
+          className="absolute top-1 left-1 shadow-md shadow-gray-500 w-[2.5rem] h-[2.5rem] rounded-full"
+        />
             </div>
+            
           ))}
         </div>
       </div>

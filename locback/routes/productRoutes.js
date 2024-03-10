@@ -271,16 +271,16 @@ router.post('/search', async (req, res) => {
 
     try {
         // Scrape from AliExpress
-        // const aliExpressUrl = `https://aliexpress.com/w/wholesale-${encodeURIComponent(query)}.html?spm=a2g0o.home.search.0`;
-        // const aliExpressResponse = await axios.get(aliExpressUrl, {
-        //     responseType: "arraybuffer",
-        //     headers: {
-        //         "Content-Type": "text/html; charset=UTF-8"
-        //     }
-        // });
+        const aliExpressUrl = `https://aliexpress.com/w/wholesale-${encodeURIComponent(query)}.html?spm=a2g0o.home.search.0`;
+        const aliExpressResponse = await axios.get(aliExpressUrl, {
+            responseType: "arraybuffer",
+            headers: {
+                "Content-Type": "text/html; charset=UTF-8"
+            }
+        });
 
-        // const aliExpressProducts = scrapeAliExpress(aliExpressResponse.data);
-        const aliExpressProducts = [];
+        const aliExpressProducts = scrapeAliExpress(aliExpressResponse.data);
+        // const aliExpressProducts = [];
 
         // Scrape from Flipkart
         const flipkartUrl = `https://www.flipkart.com/search?q=${encodeURIComponent(query)}`;
@@ -293,7 +293,7 @@ router.post('/search', async (req, res) => {
 
 
         const flipkartProducts = scrapeFlipkart(flipkartResponse.data);
-        const smartprixProducts = []
+        // const smartprixProducts = []
         // const smartprixUrl = `https://www.smartprix.com/products/?q=${encodeURIComponent(query)}`;
         // const smartprixResponse = await axios.get(smartprixUrl, {
         //     responseType: "arraybuffer",
@@ -303,35 +303,35 @@ router.post('/search', async (req, res) => {
         // });
         // const smartprixProducts = scrapeSmartprix(smartprixResponse.data);
 
-        // const browser = await puppeteer.launch();
-        //     const page = await browser.newPage();
+        const browser = await puppeteer.launch();
+            const page = await browser.newPage();
 
-        //     // Navigate to Smartprix search results page
-        //     const smartprixUrl = `https://www.smartprix.com/products/?q=${encodeURIComponent(query)}`;
-        //     await page.goto(smartprixUrl);
+            // Navigate to Smartprix search results page
+            const smartprixUrl = `https://www.smartprix.com/products/?q=${encodeURIComponent(query)}`;
+            await page.goto(smartprixUrl);
 
-        //     // Wait for product data to load
-        //     await page.waitForSelector('.sm-product.has-tag.has-features.has-actions');
+            // Wait for product data to load
+            await page.waitForSelector('.sm-product.has-tag.has-features.has-actions');
 
-        //     // Scrape product data
-        //     const smartprixProducts = await page.evaluate(() => {
-        //         const products = [];
-        //         const productElements = document.querySelectorAll('.sm-product.has-tag.has-features.has-actions');
+            // Scrape product data
+            const smartprixProducts = await page.evaluate(() => {
+                const products = [];
+                const productElements = document.querySelectorAll('.sm-product.has-tag.has-features.has-actions');
 
-        //         productElements.forEach(element => {
-        //             const name = element.querySelector('h2')?.innerText?.trim();
-        //             const price = element.querySelector('span.price')?.innerText?.trim();
-        //             const ratingStyle = element.querySelector('span.sm-rating')?.getAttribute('style');
-        //             const ratingMatch = /--rating: ([\d.]+);/.exec(ratingStyle);
-        //             const rating = ratingMatch ? parseFloat(ratingMatch[1]) : null;
-        //             products.push({ name, price, rating, from: "smartprix" });
-        //         });
+                productElements.forEach(element => {
+                    const name = element.querySelector('h2')?.innerText?.trim();
+                    const price = element.querySelector('span.price')?.innerText?.trim();
+                    const ratingStyle = element.querySelector('span.sm-rating')?.getAttribute('style');
+                    const ratingMatch = /--rating: ([\d.]+);/.exec(ratingStyle);
+                    const rating = ratingMatch ? parseFloat(ratingMatch[1]) : null;
+                    products.push({ name, price, rating, from: "smartprix" });
+                });
 
-        //         return products;
-        //     });
+                return products;
+            });
 
-        //     // Close Puppeteer browser
-        //     await browser.close();
+            // Close Puppeteer browser
+            await browser.close();
 
         // Send both sets of scraped data in response
         // res.json({ aliExpressProducts, flipkartProducts,smartprixProducts });
