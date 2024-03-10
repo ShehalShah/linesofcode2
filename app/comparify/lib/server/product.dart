@@ -1,34 +1,65 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:comparify/models/favourite.dart';
+import 'package:comparify/screens/favourite.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/product_item.dart';
 
 class Product {
-  Future<void> getProduct(String query) async {
+  Future<List<ProductItem>> getProduct(String query) async {
     Uri uri = Uri.parse('http://10.120.133.92:5001/api/products/search');
-    final res = await http.post(uri,
-        body: jsonEncode(
-          {
-            "query": query.toString(),
-          },
-        ),
-        headers: {'Content-Type': 'application/json'});
-    print("res success");
+    try {
+      final res = await http.post(
+        uri,
+        body: jsonEncode({"query": query}),
+        headers: {'Content-Type': 'application/json'},
+      );
 
-    final body = res.body;
-    final decoded = jsonDecode(body);
-    print(decoded);
-    if (res.statusCode != 200) {
-      print('incorrect');
-      return;
+      if (res.statusCode == 200) {
+        final decoded = jsonDecode(res.body);
+        List<dynamic> products = decoded["combinedProducts"];
+
+        List<ProductItem> allFetchedProducts = [];
+
+        for (var product in products) {
+          print("Product ID: ${product['title']}");
+          print("Product Name: ${product['url']}");
+          print("Product Price: ${product['price']}");
+          print("Product Image: ${product['image']}");
+          print("Product Rating: ${product['rating']}");
+          print("Product From: ${product['from']}");
+
+          // Check for valid data before adding the product
+          if (product['title'] != 'No title found' &&
+              product['price'] != 'No price found' &&
+              product['url'] != null &&
+              product['rating'] != 'No rating found') {
+            allFetchedProducts.add(ProductItem(
+              title: product['title'],
+              url: product['url'],
+              price: product['price'].toString(),
+              image: product['image'],
+              rating: product['rating'].toString(),
+              from: product['from'],
+            ));
+          }
+        }
+
+        print("RESPONSE FROM FETCH: $allFetchedProducts");
+        return allFetchedProducts;
+      } else {
+        print('Request failed with status: ${res.statusCode}');
+        // Return an empty list if the request fails
+        return [];
+      }
+    } catch (e) {
+      // Catch any exceptions that occur during the HTTP request
+      print('Error: $e');
+      // Return an empty list if an error occurs
+      return [];
     }
-    print(res.body);
-    final response = jsonDecode(body);
-    print("RESPONSE" + response);
-
-    return;
   }
 
   Future<String> addFavourite(ProductItem item, int userId) async {
@@ -66,40 +97,36 @@ class Product {
   }
 
   Future<List<ProductItem>> getFavourites(int userId) async {
-    Uri uri = Uri.parse('http://colback.adaptable.app/api/products/watchlist');
+    Uri uri = Uri.parse('https://colback.adaptable.app/api/products/watchlist');
     final res = await http.post(
       uri,
       body: jsonEncode({"userId": userId}),
       headers: {'Content-Type': 'application/json'},
     );
     final body = res.body;
-    print(body);
-    if (res.statusCode != 200) {
-      print('incorrecttttttttttt');
-      return [];
-    }
-    print(res.body);
     var response = jsonDecode(body);
-    print(response);
+    if (res.statusCode != 200) {
+      // Handle error here if needed
+      throw Exception('Failed to load data');
+    }
 
     List<ProductItem> allFavProducts = [];
 
-    if (response is Map<String, dynamic>) {
-      // Convert the object to a list of one item
-      response = [response];
+    if (response.containsKey("watchlist")) {
+      List<dynamic> watchlistJson = response["watchlist"];
+
+      for (var item in watchlistJson) {
+        allFavProducts.add(ProductItem(
+          title: item['title'],
+          url: item['url'],
+          price: item['price'],
+          image: item['image'],
+          rating: item['rating'],
+          from: item['from'],
+        ));
+      }
     }
-    
-    for (LinkedHashMap item in response) {
-      allFavProducts.add(ProductItem(
-        title: item['title'],
-        url: item['url'],
-        price: item['price'],
-        image: item['image'],
-        rating: item['rating'],
-        from: item['from'],
-      ));
-    }
-    print(allFavProducts);
+
     return allFavProducts;
   }
 }

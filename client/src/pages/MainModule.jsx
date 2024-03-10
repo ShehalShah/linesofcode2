@@ -15,6 +15,7 @@ const MainModule = () => {
   const [search, setSearch] = useState("house products");
   const [data, setData] = useState([]);
   const getData = debounce(async () => {
+    
     const data = await app_api.post("products/search", {
       query: `${search}`,
     });
@@ -35,7 +36,8 @@ const MainModule = () => {
   const activeSection = () => {
     switch (activeLink) {
       case "home":
-        return <Home />;
+        return <Home setSearch={setSearch}
+        search={search} setActiveLink={setActiveLink}/>;
       case "search":
         return (
           <Search
