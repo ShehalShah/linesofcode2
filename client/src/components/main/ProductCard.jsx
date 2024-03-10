@@ -5,6 +5,8 @@ import AliExpress from "../../assets/aliexpress.png";
 import StarRatings from "react-star-ratings";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import FilledHeart from "../../assets/FilledHeart.svg";
+import EmptyHeart from "../../assets/EmptyHeart.svg";
 
 const ProductCard = ({ data, productsToCompare, setProductsToCompare }) => {
   const navigate = useNavigate();
@@ -45,14 +47,6 @@ const ProductCard = ({ data, productsToCompare, setProductsToCompare }) => {
           className="font-semibold w-3/4 text-md mb-2"
         >
           {title}
-        </div>
-        <div
-          className="cursor-pointer text-2xl"
-          onClick={() => {
-            toast.success("Added to Favourites");
-          }}
-        >
-          💖
         </div>
       </div>
       <div

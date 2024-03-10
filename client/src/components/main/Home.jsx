@@ -5,8 +5,8 @@ import Frame20 from "../../assets/Frame20.svg";
 import Frame21 from "../../assets/Frame21.svg";
 import Banner from "../../assets/IllusBanner.svg";
 
-const Home = () => {
-  const topdeals=[
+const Home = ({ setSearch, search, setActiveLink }) => {
+  const topdeals = [
     {
       "title": "Woven Kanjivaram Silk Blend, Jacquard Saree  (Dark Blue)",
       "url": "https://www.flipkart.com/deal-day-woven-kanjivaram-silk-blend-jacquard-saree/p/itm6a58ec1ab1635?pid=SARFNSZJBTCFCBDQ&lid=LSTSARFNSZJBTCFCBDQWMVQHT&marketplace=flipkart&store=clo&srno=b_1_9&otracker=browse&fm=organic&iid=03accbec-5562-4c29-93be-536ba5bb9a20.SARFNSZJBTCFCBDQ.SEARCH&ppt=browse&ppn=browse&ssid=mec38pmsa80000001709994159120",
@@ -128,15 +128,51 @@ const Home = () => {
       "from": "amazon"
     }
   ]
+
+  function openImageUpload() {
+    const input = document.getElementById("imageUploadInput");
+    input.click();
+  }
+  
+  function handleImageUpload(event) {
+    // Handle image upload logic here
+    console.log("Image uploaded:", event.target.files[0]);
+  
+    // Create form data
+    const formData = new FormData();
+    formData.append('image', event.target.files[0]);
+  
+    // Make a POST request to upload the image
+    fetch('http://localhost:5001/api/products/upload-image', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Handle response data
+      console.log('Response:', data);
+    })
+    .catch(error => {
+      // Handle error
+      console.error('Error:', error);
+    });
+  }
+  
+
   return (
     <div className="h-full w-full px-16 flex flex-col gap-8 items-center bg-[#FFFFFF] overflow-y-auto">
-      <div className="py-5 w-full mt-20 px-16 bg-[#C1DCDC] rounded-lg flex ">
+      <div className="py-5 w-full mt-24 bg-[#C1DCDC] rounded-lg flex ">
         <div className="w-[40%] flex flex-col ml-8 justify-center gap-10 py-12">
-          <div>
+          <div className="px-16">
             <h2 className=" text-5xl font-black">Get the</h2>
             <h2 className=" text-7xl font-black"> BEST DEALS</h2>
           </div>
-          <div className="flex">
+          <div className="flex px-16">
             <div className="w-32 h-16 border-r border-[#1E1E1E]">
               <h2 className="text-xl font-bold">10+ </h2>
               <h2 className="text-md">Platforms</h2>
@@ -147,13 +183,32 @@ const Home = () => {
             </div>
           </div>
 
-          <div class="relative">
+          <div class="relative ml-8 flex items-center justify-center">
             <input
               type="text"
               placeholder="What are you looking for?"
               class="py-2 pr-8 pl-4 rounded-xl w-[90%] h-16 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200"
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  setActiveLink("search");
+                  console.log("hi");
+                }
+              }}
+            />
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-camera absolute right-10 top-4" viewBox="0 0 16 16" onClick={()=>openImageUpload()}>
+              <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4z" />
+              <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0" />
+            </svg>
+            <input
+              id="imageUploadInput"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={()=>handleImageUpload(event)}
             />
           </div>
+
         </div>
         <div className="w-[60%]">
           <img src={Banner} alt="" />
@@ -161,43 +216,43 @@ const Home = () => {
       </div>
 
       <div className="w-full grid grid-cols-4">
-      <div className="w-full flex flex-col gap-5">
-        <div className="w-full">
-          <h2 className="text-5xl font-black">Top</h2>
-          <h2 className="text-5xl font-black">Deals</h2>
-        </div>
-        <div className="text-lg text-[#1E1E1E80]">
-          <h2>Easiest Way to</h2>
-          <h2>Compare products</h2>
-          <h2>Across the web</h2>
-        </div>
-        <div className="relative w-40 bg-[#C1DCDC] h-12 rounded-lg flex items-center justify-between p-8">
-          See more
-          <svg
-            className="absolute right-3 h-5 w-5 text-gray-600"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M9.707 15.707a1 1 0 01-1.414-1.414L11.586 10 8.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-.707.293z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </div>
-      </div>
-      <div className="overflow-auto flex flex-1 w-[61rem] gap-7">
-        {topdeals.map((deal, index) => (
-          <div key={index} className="flex flex-col gap-2">
-            <div className="w-80 h-96 rounded-lg bg-[#B6B5B5] flex image-center justify-center">
-              <img src={deal.image} alt="" className="rounded-lg" />
-            </div>
-            <div className="font-semibold">{deal.title.split(' ').slice(0, 4).join(' ')}</div>
-            <div className="font-semibold text-[#1E1E1E80]">{deal.price}</div>
+        <div className="w-full flex flex-col gap-5">
+          <div className="w-full">
+            <h2 className="text-5xl font-black">Top</h2>
+            <h2 className="text-5xl font-black">Deals</h2>
           </div>
-        ))}
+          <div className="text-lg text-[#1E1E1E80]">
+            <h2>Easiest Way to</h2>
+            <h2>Compare products</h2>
+            <h2>Across the web</h2>
+          </div>
+          <div className="relative w-40 bg-[#C1DCDC] h-12 rounded-lg flex items-center justify-between p-8">
+            See more
+            <svg
+              className="absolute right-3 h-5 w-5 text-gray-600"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M9.707 15.707a1 1 0 01-1.414-1.414L11.586 10 8.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-.707.293z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+        <div className="overflow-auto flex flex-1 w-[61rem] gap-7">
+          {topdeals.map((deal, index) => (
+            <div key={index} className="flex flex-col gap-2">
+              <div className="w-80 h-96 rounded-lg bg-[#B6B5B5] flex image-center justify-center">
+                <img src={deal.image} alt="" className="rounded-lg" />
+              </div>
+              <div className="font-semibold">{deal.title.split(' ').slice(0, 4).join(' ')}</div>
+              <div className="font-semibold text-[#1E1E1E80]">{deal.price}</div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
 
       <div className="w-full flex flex-col items-center justify-center">
         <div className=" text-3xl font-black">About us</div>
