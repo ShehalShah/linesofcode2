@@ -49,102 +49,121 @@ class _ProductCardState extends ConsumerState<ProductCard> {
               ),
             ],
           ),
-          child: ListTile(
-            onTap: () {
-              // print("itemmmmmm");
-              _launchUrl(widget.item.url);
-            },
-            contentPadding: const EdgeInsets.all(16),
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                widget.item.image,
-                // scale: 1.2,
-                width: 80,
-                height: 200,
-                fit: BoxFit.cover,
-              ),
-            ),
-            title: Text(
-              widget.item.title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 3,
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 4),
-                Row(
+          child: Column(
+            children: [
+              ListTile(
+                onTap: () {
+                  // print("itemmmmmm");
+                  _launchUrl(widget.item.url);
+                },
+                contentPadding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    widget.item.image,
+                    // scale: 1.2,
+                    width: 80,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                title: Text(
+                  widget.item.title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.item.price,
-                      style: TextStyle(
-                        color: Colors.grey[700],
-                        fontSize: 16,
-                      ),
-                    ),
-                    // favourites icon
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () async {
-                        if (isFav) {
-                          ref.read(favouriteListProvider).contains(widget.item)
-                              ? ref
-                                      .watch(favouriteListProvider.notifier)
-                                      .state =
-                                  ref
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Text(
+                          widget.item.price,
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 16,
+                          ),
+                        ),
+                        // favourites icon
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () async {
+                            if (isFav) {
+                              ref
                                       .read(favouriteListProvider)
-                                      .where(
-                                          (element) => element != widget.item)
-                                      .toList()
-                              : print("Not in list");
-                        }
-                        // print(widget.item);
+                                      .contains(widget.item)
+                                  ? ref
+                                          .watch(favouriteListProvider.notifier)
+                                          .state =
+                                      ref
+                                          .read(favouriteListProvider)
+                                          .where((element) =>
+                                              element != widget.item)
+                                          .toList()
+                                  : print("Not in list");
+                            }
+                            // print(widget.item);
 
-                        else {
-                          ref.watch(favouriteListProvider.notifier).state = [
-                            ...ref.read(favouriteListProvider),
-                            widget.item
-                          ];
+                            else {
+                              ref.watch(favouriteListProvider.notifier).state =
+                                  [
+                                ...ref.read(favouriteListProvider),
+                                widget.item
+                              ];
 
-                          // store in db
-                          result =
-                              await productInstance.addFavourite(widget.item, widget.userId);
-                          print(result);
-                        }
-                        print(ref.read(favouriteListProvider));
+                              // store in db
+                              result = await productInstance.addFavourite(
+                                  widget.item, widget.userId);
+                              print(result);
+                            }
+                            print(ref.read(favouriteListProvider));
 
-                        setState(() {
-                          isFav = !isFav;
-                        });
-                      },
-                      icon: Icon(
-                        isFav ? Icons.favorite : Icons.favorite_border,
-                        color: isFav ? Colors.red[700] : Colors.red[700],
-                      ),
+                            setState(() {
+                              isFav = !isFav;
+                            });
+                          },
+                          icon: Icon(
+                            isFav ? Icons.favorite : Icons.favorite_border,
+                            color: isFav ? Colors.red[700] : Colors.red[700],
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 0),
+                    Row(
+                      children: [
+                        const Icon(Icons.star, color: Colors.amber, size: 16),
+                        const SizedBox(width: 5),
+                        Text(
+                          widget.item.rating,
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
                   ],
                 ),
-                const SizedBox(height: 0),
-                Row(
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                child: Row(
                   children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 16),
-                    const SizedBox(width: 5),
-                    Text(
-                      widget.item.rating,
-                      style: const TextStyle(
-                        color: Colors.black54,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
+                    GestureDetector(
+                        onTap: () {},
+                        child: Text(
+                          "View More",
+                          style: TextStyle(
+                            color: Pallete.linkBlue,
+                          ),
+                        )),
+
                     Spacer(),
 
                     // compare checkbox
@@ -180,8 +199,8 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                     )
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         Positioned(
