@@ -29,19 +29,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       // Loader.show(context,
       //     progressIndicator: CircularProgressIndicator(color: blackTeal));
-      String status = '';
+      int userId = -1;
 
       try {
-        status = await authController.register(name, email, password);
+        userId = await authController.register(name, email, password);
+        print("Register screennnnnnnnnnn user id: $userId");
       } on Exception catch (e) {
         // Loader.hide();
         print(e);
       }
       // Loader.hide();
 
-      if (status == "Success") {
+      if (userId != "-1") {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: ((context) => const Home())));
+            MaterialPageRoute(builder: ((context) => Home(userId: userId))));
       } else {
         MotionToast.error(
                 toastDuration: Duration(milliseconds: 500),

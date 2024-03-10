@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.poppinsTextTheme(ThemeData.light().textTheme),
       ),
-      home: const Home(),
+      home: const LoginScreen(),
     );
   }
 }

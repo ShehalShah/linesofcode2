@@ -30,7 +30,8 @@ final favouriteListProvider = StateProvider<List<ProductItem>>(
 );
 
 class Home extends ConsumerStatefulWidget {
-  const Home({super.key});
+  final int userId;
+  const Home({required this.userId, super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomeState();
@@ -310,13 +311,13 @@ class _HomeState extends ConsumerState<Home> {
       appBar: AppBar(
         title: Row(
           children: [
+            // Text(
+            //   "Hey ",
+            //   textScaleFactor: 1.15,
+            // ),
+            // // GetUserName(userID: user.uid),
             Text(
-              "Hey ",
-              textScaleFactor: 1.15,
-            ),
-            // GetUserName(userID: user.uid),
-            Text(
-              "Het!",
+              "Hey!",
               textScaleFactor: 1.15,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -333,8 +334,10 @@ class _HomeState extends ConsumerState<Home> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Favourite()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Favourite(userId: widget.userId)));
             },
             icon: Icon(Icons.favorite_border_rounded),
           ),
@@ -486,7 +489,7 @@ class _HomeState extends ConsumerState<Home> {
                     itemCount: allTopProducts.length,
                     itemBuilder: (context, index) {
                       var item = allTopProducts[index];
-                      return ProductCard(item: item);
+                      return ProductCard(item: item, userId: widget.userId);
                     },
                   ),
                 ),

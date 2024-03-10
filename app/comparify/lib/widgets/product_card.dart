@@ -9,7 +9,9 @@ import '../constants.dart';
 
 class ProductCard extends ConsumerStatefulWidget {
   final ProductItem item;
-  const ProductCard({Key? key, required this.item});
+  final int userId;
+  const ProductCard({Key? key, required this.item, required this.userId})
+      : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ProductCardState();
@@ -109,7 +111,8 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                           ];
 
                           // store in db
-                          result = await productInstance.addFavourite(widget.item);
+                          result =
+                              await productInstance.addFavourite(widget.item, widget.userId);
                           print(result);
                         }
                         print(ref.read(favouriteListProvider));
