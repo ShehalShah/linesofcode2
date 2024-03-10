@@ -50,7 +50,12 @@ const MainModule = () => {
           />
         );
       case "favourite":
-        return <Favourite />;
+        return (
+          <Favourite
+            productsToCompare={productsToCompare}
+            setProductsToCompare={setProductsToCompare}
+          />
+        );
       default:
         return <Home />;
     }
