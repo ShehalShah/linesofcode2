@@ -15,6 +15,8 @@ const Search = ({
   const [priceRange, setPriceRange] = useState({ min: 0, max: 100000 });
   const [rating, setRating] = useState(0);
 
+  // const []
+
   const companies = [
     { value: "all", label: "All companies" },
     { value: "amazon", label: "Amazon" },
@@ -65,7 +67,7 @@ const Search = ({
   return (
     <div className="w-full h-full pt-28 pb-10 overflow-y-auto gap-3">
       <div className="w-full h-full flex flex-col items-center justify-center">
-        <div className="h-36 w-[90%] rounded-xl px-16 bg-gradient-to-tl flex justify-between items-center">
+        <div className="h-36 w-[90%] rounded-xl px-16 bg-[#C1DCDC] flex justify-between items-center">
           <div className="">
             <Input
               placeholder="Search for products"

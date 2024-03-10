@@ -8,7 +8,7 @@ import Banner from "../../assets/IllusBanner.svg";
 const Home = () => {
   return (
     <div className="h-full w-full px-16 flex flex-col gap-8 items-center bg-[#FFFFFF] overflow-y-auto">
-      <div className="py-5 w-full mt-20 px-16 bg-[#C1DCDC] rounded-lg flex ">
+      <div className="py-5 w-full mt-24 px-16 bg-[#C1DCDC] rounded-lg flex ">
         <div className="w-[40%] flex flex-col ml-8 justify-center gap-10 py-12">
           <div>
             <h2 className=" text-5xl font-black">Get the</h2>
