@@ -6,8 +6,10 @@ import Icons from "../components/Icons";
 import Navbar from "../components/main/Navbar";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import ReactMarkdown from 'react-markdown';
+import { useNavigate } from "react-router-dom";
 
 const ComparePage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const productsToCompare = location.state.productsToCompare;
 
@@ -59,7 +61,9 @@ const ComparePage = () => {
     });
   };
 
-  const genAI = new GoogleGenerativeAI("AIzaSyClbJUJYImDMRjiGZzEGvxwISQE5KEcnaQ");
+  const genAI = new GoogleGenerativeAI(
+    "AIzaSyClbJUJYImDMRjiGZzEGvxwISQE5KEcnaQ"
+  );
 
   const [mainData, setMainData] = useState([]);
 
@@ -94,7 +98,6 @@ const ComparePage = () => {
       // fetchGem(mainData)
     }
   }, [mainData]);
-
 
   const processRating = (rating) => {
     if (rating !== "No rating found" && rating) {
@@ -150,38 +153,62 @@ const ComparePage = () => {
 
     data.forEach((product, index) => {
       prompt += `${index + 1}. title: ${product.title}\n`;
-      prompt +=`rating : ${product.rating}`
-      prompt +=`price : ${product.price}`
-      prompt +=`reviews : ${product.reviews.join(" ")}`
-
+      prompt += `rating : ${product.rating}`;
+      prompt += `price : ${product.price}`;
+      prompt += `reviews : ${product.reviews.join(" ")}`;
     });
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
-    setins(text)
+    setins(text);
     console.log(text);
   };
 
   return (
-    <div className="h-screen overflow-y-auto">
-      <div className="w-full bg-gradient-to-tl h-full flex  items-center justify-center">
+    <div className="h-screen w-full items-center justify-center overflow-y-auto gap-5">
+      <div className="w-full px-10 h-full flex items-center justify-center">
         <Navbar />
-        <div className="w-full min-h-screen mt-40 flex items-center justify-center bg-white overflow-y-auto">
-          <div className="w-full h-full flex-1 overflow-y-auto  border-x border-gray-300 rounded-lg">
+        <div className="w-full min-h-screen mt-96 flex items-center justify-center bg-white overflow-y-auto">
+          <div className="w-full h-full flex-1 overflow-y-auto rounded-lg">
+            <div
+              className="h-12 w-full cursor-pointer flex items-center justify-start"
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                fill="currentColor"
+                className="bi bi-arrow-left-short"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"
+                />
+              </svg>
+            </div>
             <div className="w-full h-full flex items-start justify-center overflow-y-auto">
               {mainData?.map((product, index) => (
                 <div
                   key={index}
-                  className="pb-10 border-b w-full h-full p-4 flex flex-col items-center justify-center border-r border-gray-300 overflow-y-auto"
+                  className="pb-10 w-full h-full p-4 flex flex-col items-center justify-center overflow-y-auto"
                 >
-                  <div className="w-1/2 h-[70%] flex items-center justify-center">
+                  <div className="w-full h-[70%] flex items-center justify-center">
                     <div className="bg-white p-3 rounded-xl h-[20rem] w-[20rem] flex items-center justify-center">
-                      <img src={product.image} className="object-contain w-full h-[16rem]" />
+                      <img
+                        src={product.image}
+                        className="object-contain w-full h-[16rem]"
+                      />
                     </div>
                   </div>
-                  <div className="flex flex-col w-1/2 h-[70%] items-center justify-center">
-                    <div className="text-xl w-full font-semibold">{product.title.split(' ').slice(0, 6).join(' ')}...</div>
+                  <div className="flex flex-col w-full h-[70%] items-center justify-center">
+                    <div className="text-xl w-full font-semibold">
+                      {product.title.split(" ").slice(0, 6).join(" ")}...
+                    </div>
 
                     <div className="text-lg flex w-full ">
                       {processRating(parseFloat(product.rating))}
@@ -218,12 +245,13 @@ const ComparePage = () => {
             </div>
           </div>
         </div>
-
       </div>
-      <div class="bg-gray-100 border border-gray-300 rounded-lg p-6 m-8 mt-28 h-fit">
-        <h2 class="text-xl font-semibold mb-4">AI Generated Insights</h2>
-        <div className="prose max-w-none">
-          <ReactMarkdown>{ins}</ReactMarkdown>
+      <div className="w-full pb-10 flex items-center justify-center">
+        <div class="bg-gray-100 h-fit w-[90%] border border-gray-300 rounded-lg p-6 mt-80">
+          <h2 class="text-3xl font-semibold mb-4">AI Generated Insights</h2>
+          <div className="prose max-w-none">
+            <ReactMarkdown>{ins}</ReactMarkdown>
+          </div>
         </div>
       </div>
     </div>
