@@ -5,6 +5,7 @@ import MainModule from './pages/MainModule'
 import ProductPage from "./pages/ProductPage";
 import ComparePage from "./pages/ComparePage";
 import ImageAnalyzer from "./pages/ImageAnalyzer";
+import Chat from './pages/Chat';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/" element={<MainModule />} />
         </Routes>
       </Router>
+      <Chat />
     </div>
   );
 }
