@@ -12,6 +12,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
+import 'favourite.dart';
+
 final listProvider = StateProvider<List<ProductItem>>(
   (ref) {
     List<ProductItem> indexList = [];
@@ -196,7 +198,12 @@ final topProductProvider = StateProvider<List<ProductItem>>((ref) {
 });
 
 class Home extends ConsumerStatefulWidget {
-  const Home({super.key});
+  const Home({
+    super.key,
+    required this.userId,
+  });
+
+  final userId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomeState();
@@ -320,13 +327,13 @@ class _HomeState extends ConsumerState<Home> {
       appBar: AppBar(
         title: Row(
           children: [
+            // Text(
+            //   "Hey ",
+            //   textScaleFactor: 1.15,
+            // ),
+            // // GetUserName(userID: user.uid),
             Text(
-              "Hey ",
-              textScaleFactor: 1.15,
-            ),
-            // GetUserName(userID: user.uid),
-            Text(
-              "Het!",
+              "Hey!",
               textScaleFactor: 1.15,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -340,6 +347,17 @@ class _HomeState extends ConsumerState<Home> {
             radius: 24,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Favourite(userId: widget.userId)));
+            },
+            icon: Icon(Icons.favorite_border_rounded),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -427,14 +445,15 @@ class _HomeState extends ConsumerState<Home> {
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: Filter(
-                                  // callback: callback,
-                                  // low: lowVal,
-                                  // high: highVal,
-                                  // online: isOnline,
-                                  // offline: isOffline,
-                                  // mode: mode,
-                                  // isChanged: isChanged,
-                                  ),
+                                userId: widget.userId,
+                                // callback: callback,
+                                // low: lowVal,
+                                // high: highVal,
+                                // online: isOnline,
+                                // offline: isOffline,
+                                // mode: mode,
+                                // isChanged: isChanged,
+                              ),
                             );
                           },
                           shape: RoundedRectangleBorder(
@@ -487,7 +506,10 @@ class _HomeState extends ConsumerState<Home> {
                     itemCount: filtered.length,
                     itemBuilder: (context, index) {
                       var item = filtered[index];
-                      return ProductCard(item: item);
+                      return ProductCard(
+                        item: item,
+                        userId: widget.userId,
+                      );
                     },
                   ),
                 ),

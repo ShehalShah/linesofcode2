@@ -3,19 +3,23 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../database');
 
 const User = sequelize.define('User', {
- name: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
- },
- email: {
+  },
+  email: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
- },
- password: {
+  },
+  password: {
     type: DataTypes.STRING,
     allowNull: false,
- },
+  },
+  watchlist: {
+    type: DataTypes.ARRAY(DataTypes.JSON), // Assuming each watchlist item is a JSON object
+    defaultValue: [], // Default value is an empty array
+  },
 });
 
 module.exports = User;

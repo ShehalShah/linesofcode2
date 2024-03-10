@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: (theme) => ({
-        "gradient-to-tl": "linear-gradient(to top left, white, #6133B4)",
+        "gradient-to-tl": "linear-gradient(to top left, #c1dcdc, #3aa39f)",
       }),
     },
   },

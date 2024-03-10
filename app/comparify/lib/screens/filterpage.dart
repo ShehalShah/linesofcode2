@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 class Filter extends ConsumerStatefulWidget {
   const Filter({
     super.key,
+    required this.userId,
     // required this.callback,
     // required this.low,
     // required this.high,
@@ -16,6 +17,8 @@ class Filter extends ConsumerStatefulWidget {
     // required this.mode,
     // required this.isChanged
   });
+
+  final userId;
 
   // final Function(int, int, bool, bool, String mode, bool isChanged) callback;
   // final int low, high;
@@ -425,8 +428,12 @@ class _FilterState extends ConsumerState<Filter> {
                           filterProductsByPriceAndRatingandSources(
                               low, high, lowr, highr, services);
                         }
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: ((context) => Home())));
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => Home(
+                                      userId: widget.userId,
+                                    ))));
 
                         print(filtered);
                       },

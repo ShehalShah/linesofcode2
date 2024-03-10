@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController {
-  Future<String> login(
+  Future<int> login(
     String username,
     String password,
   ) async {
@@ -19,15 +20,22 @@ class AuthController {
     print(body);
     if (res.statusCode != 200) {
       print('incorrect');
-      return "incorrect_user_details";
+      return -1;
     }
     print(res.body);
     final response = jsonDecode(body);
     init(response);
-    return "Success";
+
+    // final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // prefs.setString('userId', response['id']);
+    // print("fetched user id: ${prefs.getInt('userId')}");
+
+    print("Response user LLLLLLLLLLLLLLLLLLLLLLLLLLLL: ${response['id']}");
+
+    return response['id'];
   }
 
-  Future<String> register(
+  Future<int> register(
     String name,
     String email,
     String password,
@@ -48,12 +56,19 @@ class AuthController {
     print(body);
     if (res.statusCode != 200) {
       print('incorrect');
-      return "incorrect_user_details";
+      return -1;
     }
     print(res.body);
     final response = jsonDecode(body);
     init(response);
-    return "Success";
+
+    // final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // prefs.setString('userId', response['id']);
+    // print("fetched user id: ${prefs.getInt('userId')}");
+
+    print("Response user id RRRRRRRRRRRRRRRRRRRRRRRRRR: ${response['id']}");
+
+    return response['id'];
   }
 
   Future<String> resetPassword(
