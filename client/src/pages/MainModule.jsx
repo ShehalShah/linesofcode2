@@ -12,7 +12,7 @@ import ImageAnalyzer from "./ImageAnalyzer";
 const MainModule = () => {
   const navigate = useNavigate();
   const [productsToCompare, setProductsToCompare] = useState([]);
-  const [activeLink, setActiveLink] = useState("image");
+  const [activeLink, setActiveLink] = useState("home");
   const [search, setSearch] = useState("house products");
   const [data, setData] = useState([]);
   const getData = debounce(async () => {
@@ -57,7 +57,8 @@ const MainModule = () => {
           />
         );
       default:
-        return <Home />;
+        return <Home setSearch={setSearch}
+        search={search} setActiveLink={setActiveLink}/>;
     }
   };
 
