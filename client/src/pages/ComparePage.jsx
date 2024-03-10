@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 import app_api from "../config/ApiConfig";
 import Icons from "../components/Icons";
+import Navbar from "../components/main/Navbar";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const ComparePage = () => {
   const location = useLocation();
@@ -13,6 +15,8 @@ const ComparePage = () => {
       url: `${url}`,
     });
   };
+
+  const genAI = new GoogleGenerativeAI("AIzaSyClbJUJYImDMRjiGZzEGvxwISQE5KEcnaQ");
 
   const [mainData, setMainData] = useState([]);
 
@@ -82,32 +86,45 @@ const ComparePage = () => {
     console.log(mainData);
   }, [mainData]);
 
+  const fetchGem = async (data) => {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+    const prompt = `Analyze the following reviews and give me your insights based on it of a ${data.name} the reviews are as follows ${data.reviews.join(" ")}`
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    setins(text)
+    console.log(text);
+  };
+
   return (
     <div className="w-full bg-gradient-to-tl h-full flex items-center justify-center">
-      <div className="w-full h-full flex items-center justify-center">
-        <div className="w-full h-[32rem] overflow-y-auto">
-          <div className="w-full flex items-start justify-center">
+      <Navbar />
+      <div className="w-full pb-10 h-full flex items-center justify-center bg-white overflow-y-auto">
+        <div className="w-full h-full mt-40 flex-1 overflow-y-auto  border-x border-gray-300 rounded-lg">
+          <div className="w-full h-full flex items-start justify-center overflow-y-auto">
             {mainData?.map((product, index) => (
               <div
                 key={index}
-                className="w-full h-full p-4 flex flex-col items-center justify-center"
+                className="w-full h-full p-4 flex flex-col items-center justify-center border-r border-gray-300 overflow-y-auto"
               >
                 <div className="w-1/2 h-[70%] flex items-center justify-center">
-                  <div className="bg-white p-3 rounded-xl">
+                  <div className="bg-white p-3 rounded-xl h-[20rem] w-[20rem] flex items-center justify-center">
                     <img src={product.image} />
                   </div>
                 </div>
                 <div className="flex flex-col w-1/2 h-[70%] items-center justify-center">
-                  <div className="text-xl w-full">{product.title}</div>
+                  <div className="text-xl w-full font-semibold">{product.title.split(' ').slice(0, 6).join(' ')}...</div>
 
-                  <div className="text-lg flex w-full">
+                  <div className="text-lg flex w-full ">
                     {processRating(parseFloat(product.rating))}
                   </div>
-                  <div className="text-3xl font-bold w-full mt-5">
+                  <div className="text-3xl font-bold w-full mt-5 pb-5 border-b border-gray-200">
                     {product.price}
                   </div>
                   <div className="text-lg font-bold w-full my-5">Reviews</div>
-                  <div className="w-full h-fit">
+                  <div className="w-full h-[10rem] overflow-y-auto">
                     <div className="flex flex-col gap-4 w-full items-center justify-center">
                       {product?.reviews?.map((review, index) => (
                         <div

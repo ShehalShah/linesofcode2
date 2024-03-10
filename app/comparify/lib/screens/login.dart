@@ -21,25 +21,27 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     void signIn(String email, String password) async {
-      print("HI " + email);
-      print("HI " + password);
+      // print("HI " + email);
+      // print("HI " + password);
 
       // Navigator.of(context).push(
       //     MaterialPageRoute(builder: (context) => const JobProfile()));
       // Loader.show(context, progressIndicator: CircularProgressIndicator(color: blackTeal));
-      String status = '';
+      // String status = '';
+      int userId = -1;
 
       try {
-        status = await authController.login(email, password);
+        userId = await authController.login(email, password);
+        // print("Login screen user id: $userId");
       } on Exception catch (e) {
         // Loader.hide();
         print(e);
       }
       // Loader.hide();
 
-      if (status == "Success") {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: ((context) => Home())));
+      if (userId != -1) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: ((context) => Home(userId: userId))));
       } else {
         MotionToast.error(
                 toastDuration: Duration(milliseconds: 500),

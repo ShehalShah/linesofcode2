@@ -45,6 +45,7 @@ dependencies:
   flutter_riverpod: ^2.4.10
   syncfusion_flutter_sliders: ^22.2.12
   intl: ^0.18.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
