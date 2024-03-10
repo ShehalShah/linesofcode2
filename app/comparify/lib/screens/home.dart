@@ -9,6 +9,7 @@ import 'package:comparify/server/product.dart';
 import 'package:comparify/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
@@ -258,41 +259,40 @@ class _HomeState extends ConsumerState<Home> {
     // int member,
   ) async {
     // try{}
-    // print("request");
+    print("request");
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse(
-          "http://colback.adaptable.app/api/products/upload-imageonlytit"),
+      Uri.parse("http://10.120.133.92:5001/api/products/upload-imageonlytit"),
     );
-    // print("request success");
+    print("request success");
 
-    // print("multipart");
+    print("multipart");
 
     http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
       'image',
       image.path,
-      // contentType: MediaType("image", "*"),
+      contentType: MediaType("image", "*"),
     );
 
-    // print("success");
+    print("success");
 
-    // print("request add");
+    print("request add");
 
     request.files.add(
       multipartFile,
     );
-    // print("success");
+    print("success");
 
     // request.files.add(
     //   multipartFile,
     // );
-    // print("sending ");
+    print("sending ");
     var res = await request.send();
-    // print("success");
+    print("success");
 
     var responseBody = await res.stream.bytesToString();
     var response = jsonDecode(responseBody);
-    // print(response);
+    print(response);
 
     if (res.statusCode == 200) {
       // Handle success
@@ -321,6 +321,7 @@ class _HomeState extends ConsumerState<Home> {
   @override
   Widget build(BuildContext context) {
     String text = searchController.text;
+    TextEditingController scannedtext = TextEditingController(text: title);
     List<ProductItem> filtered = ref.watch(topProductProvider);
     // print("hi+${filtered}");
 
@@ -429,15 +430,25 @@ class _HomeState extends ConsumerState<Home> {
                       final returnedImage = await _pickImageFromCamera();
 
                       if (returnedImage != null) {
-                        // String path = returnedImage!.path;
-                        // File file = File(path);
-                        // _uploadImageToServer(file);
+                        String path = returnedImage!.path;
+                        File file = File(path);
+                        _uploadImageToServer(file);
+                        print(title);
                         // List<String> words = title.split(" ");
                         // String truncatedResponse =
                         //     words.sublist(0, 3).join(" ");
 
                         // print("1");
-                        await productcontroller.getProduct("phone");
+                        final List<ProductItem> scannedproduct =
+                            await productcontroller.getProduct(title);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Searchscreen(
+                                      userId: widget.userId,
+                                      searchController: scannedtext,
+                                      searchResults: scannedproduct,
+                                    )));
                         // print("2");
                       }
                     },

@@ -17,7 +17,6 @@ class _FavouriteState extends State<Favourite> {
   List<ProductItem> allFavProducts = [];
   Product productInstance = Product();
 
-
   @override
   initState() {
     super.initState();
@@ -32,7 +31,8 @@ class _FavouriteState extends State<Favourite> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Favourite', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: const Text('Favourite',
+              style: TextStyle(fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -49,7 +49,7 @@ class _FavouriteState extends State<Favourite> {
                   radius: const Radius.circular(4),
                   thickness: 4,
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.64,
+                    height: MediaQuery.of(context).size.height * 0.84,
                     child: ListView.builder(
                       controller: _scrollController,
                       itemCount: allFavProducts.length,
