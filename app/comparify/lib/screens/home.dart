@@ -257,15 +257,15 @@ class _HomeState extends ConsumerState<Home> {
     // int member,
   ) async {
     // try{}
-    print("request");
+    // print("request");
     var request = http.MultipartRequest(
       'POST',
       Uri.parse(
           "http://colback.adaptable.app/api/products/upload-imageonlytit"),
     );
-    print("request success");
+    // print("request success");
 
-    print("multipart");
+    // print("multipart");
 
     http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
       'image',
@@ -273,35 +273,35 @@ class _HomeState extends ConsumerState<Home> {
       // contentType: MediaType("image", "*"),
     );
 
-    print("success");
+    // print("success");
 
-    print("request add");
+    // print("request add");
 
     request.files.add(
       multipartFile,
     );
-    print("success");
+    // print("success");
 
     // request.files.add(
     //   multipartFile,
     // );
-    print("sending ");
+    // print("sending ");
     var res = await request.send();
-    print("success");
+    // print("success");
 
     var responseBody = await res.stream.bytesToString();
     var response = jsonDecode(responseBody);
-    print(response);
+    // print(response);
 
     if (res.statusCode == 200) {
       // Handle success
       // init(response);
       title = response;
-      print('Form data submitted successfully');
+      // print('Form data submitted successfully');
       return "Success";
     } else {
       // Handle error
-      print('Error submitting form data. Status code: ${res.statusCode}');
+      // print('Error submitting form data. Status code: ${res.statusCode}');
       return "fail";
     }
   }
@@ -320,7 +320,7 @@ class _HomeState extends ConsumerState<Home> {
   @override
   Widget build(BuildContext context) {
     List<ProductItem> filtered = ref.watch(topProductProvider);
-    print("hi+${filtered}");
+    // print("hi+${filtered}");
 
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -421,9 +421,9 @@ class _HomeState extends ConsumerState<Home> {
                         // String truncatedResponse =
                         //     words.sublist(0, 3).join(" ");
 
-                        print("1");
+                        // print("1");
                         await productcontroller.getProduct("phone");
-                        print("2");
+                        // print("2");
                       }
                     },
                     child: Padding(

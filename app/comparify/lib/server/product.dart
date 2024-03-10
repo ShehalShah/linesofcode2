@@ -1,6 +1,8 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:comparify/models/favourite.dart';
+import 'package:comparify/screens/favourite.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/product_item.dart';
@@ -66,40 +68,36 @@ class Product {
   }
 
   Future<List<ProductItem>> getFavourites(int userId) async {
-    Uri uri = Uri.parse('http://colback.adaptable.app/api/products/watchlist');
+    Uri uri = Uri.parse('https://colback.adaptable.app/api/products/watchlist');
     final res = await http.post(
       uri,
       body: jsonEncode({"userId": userId}),
       headers: {'Content-Type': 'application/json'},
     );
     final body = res.body;
-    print(body);
-    if (res.statusCode != 200) {
-      print('incorrecttttttttttt');
-      return [];
-    }
-    print(res.body);
     var response = jsonDecode(body);
-    print(response);
+    if (res.statusCode != 200) {
+      // Handle error here if needed
+      throw Exception('Failed to load data');
+    }
 
     List<ProductItem> allFavProducts = [];
 
-    if (response is Map<String, dynamic>) {
-      // Convert the object to a list of one item
-      response = [response];
+    if (response.containsKey("watchlist")) {
+      List<dynamic> watchlistJson = response["watchlist"];
+
+      for (var item in watchlistJson) {
+        allFavProducts.add(ProductItem(
+          title: item['title'],
+          url: item['url'],
+          price: item['price'],
+          image: item['image'],
+          rating: item['rating'],
+          from: item['from'],
+        ));
+      }
     }
-    
-    for (LinkedHashMap item in response) {
-      allFavProducts.add(ProductItem(
-        title: item['title'],
-        url: item['url'],
-        price: item['price'],
-        image: item['image'],
-        rating: item['rating'],
-        from: item['from'],
-      ));
-    }
-    print(allFavProducts);
+
     return allFavProducts;
   }
 }

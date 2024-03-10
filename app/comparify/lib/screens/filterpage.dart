@@ -56,7 +56,7 @@ class _FilterState extends ConsumerState<Filter> {
   @override
   void initState() {
     // TODO: implement initState
-    print("yash");
+    // print("yash");
     super.initState();
     // _isChecked = widget.offline;
     // _isCorrected = widget.online;
@@ -240,9 +240,9 @@ class _FilterState extends ConsumerState<Filter> {
                       _values.start.round().toDouble() % 500;
                   high = _values.end.round().toDouble() -
                       _values.end.round().toDouble() % 500;
-                  print("New values: $newValues");
-                  print("Low range: $low");
-                  print("High range: $high");
+                  // print("New values: $newValues");
+                  // print("Low range: $low");
+                  // print("High range: $high");
                 },
               ),
             ),
@@ -331,12 +331,12 @@ class _FilterState extends ConsumerState<Filter> {
                         label: const Text('Flipkart'),
                         selected: _isFlipkartSelected,
                         onSelected: (bool selected) {
-                          print(selected);
-                          print("Before update: $services");
+                          // print(selected);
+                          // print("Before update: $services");
                           setState(() {
                             _isFlipkartSelected = selected;
                             if (_isFlipkartSelected) services.add('flipkart');
-                            print("After update: $services");
+                            // print("After update: $services");
                           });
                         },
                       ),
@@ -347,13 +347,13 @@ class _FilterState extends ConsumerState<Filter> {
                         label: Text('Amazon'),
                         selected: _isAmazonSelected,
                         onSelected: (bool selected) {
-                          print(selected);
-                          print("Before update: $services");
+                          // print(selected);
+                          // print("Before update: $services");
 
                           setState(() {
                             _isAmazonSelected = selected;
                             if (_isAmazonSelected) services.add('amazon');
-                            print("After update: $services");
+                            // print("After update: $services");
                           });
                         },
                       ),
@@ -364,14 +364,14 @@ class _FilterState extends ConsumerState<Filter> {
                           label: Text('AliExpress'),
                           selected: _isAliExpressSelected,
                           onSelected: (bool selected) {
-                            print(selected);
-                            print("Before update: $services");
+                            // print(selected);
+                            // print("Before update: $services");
 
                             setState(() {
                               _isAliExpressSelected = selected;
                               if (_isAliExpressSelected)
                                 services.add('aliexpress');
-                              print("After update: $services");
+                              // print("After update: $services");
                             });
                           }),
                     ],
@@ -435,7 +435,7 @@ class _FilterState extends ConsumerState<Filter> {
                                       userId: widget.userId,
                                     ))));
 
-                        print(filtered);
+                        // print(filtered);
                       },
                       child: FittedBox(
                         child: Text(
