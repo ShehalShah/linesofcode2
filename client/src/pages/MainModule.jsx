@@ -54,7 +54,7 @@ const MainModule = () => {
   };
 
   return (
-    <div className="w-full relative bg-gradient-to-tl h-full flex items-center justify-center">
+    <div className="w-full relative h-full flex items-center justify-center">
       <Navbar activeLink={activeLink} setActiveLink={setActiveLink} />
       {activeSection()}
       {productsToCompare.length > 0 && (

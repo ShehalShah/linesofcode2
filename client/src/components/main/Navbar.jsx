@@ -18,7 +18,12 @@ const Link = ({ name, link, activeLink, setActiveLink }) => {
 };
 const Navbar = ({ activeLink, setActiveLink }) => {
   return (
-    <div className="bg-transparent w-full h-20 fixed flex top-0 left-0 px-10 items-center justify-between">
+    <div
+      className="bg-white z-50 w-full h-20 fixed flex top-0 left-0 px-10 items-center justify-between"
+      style={{
+        "box-shadow": "0px 10px 20px 2px #00000017",
+      }}
+    >
       <img src={Logobl} alt="logo" className="h-8 object-contain" />
       <div className="flex w-full items-center h-full justify-end gap-3">
         <Link
