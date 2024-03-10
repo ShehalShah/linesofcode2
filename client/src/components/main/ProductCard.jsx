@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Amazon from "../../assets/amazon.png";
 import Flipkart from "../../assets/flipkart.png";
 import AliExpress from "../../assets/aliexpress.png";
@@ -7,15 +7,53 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import FilledHeart from "../../assets/FilledHeart.svg";
 import EmptyHeart from "../../assets/EmptyHeart.svg";
+import app_api from "../../config/ApiConfig";
 
 const ProductCard = ({ data, productsToCompare, setProductsToCompare }) => {
   const navigate = useNavigate();
   const { title, image, url, price, rating, from } = data;
+
+  const fav = JSON.parse(localStorage.getItem("watchlist"));
+
+  const [isLiked, setIsLiked] = useState(false);
+
+  useEffect(() => {
+    const isProductInWatchlist = fav.some(
+      (product) => product.title === data.title
+    );
+    setIsLiked(isProductInWatchlist);
+  }, [fav, data.title]);
+
+  const handleLike = async () => {
+    if (isLiked) {
+      const newWatchlist = fav.filter((product) => product.title !== title);
+      localStorage.setItem("watchlist", JSON.stringify(newWatchlist));
+      setIsLiked(false);
+      toast.success("Removed from Watchlist");
+    } else {
+      const newWatchlist = [...fav, data];
+      localStorage.setItem("watchlist", JSON.stringify(newWatchlist));
+      setIsLiked(true);
+      const userId = localStorage.getItem("userId");
+      const response = await app_api
+        .post("products/add-to-watchlist", {
+          userId,
+          product: data,
+        })
+        .then(() => {
+          console.log("Success");
+        })
+        .catch(() => {
+          console.log("Please try again");
+        });
+    }
+  };
+
   return (
     <div
       className="w-full p-3 flex flex-col items-center justify-center h-[27rem] rounded-lg bg-white overflow-hidden"
       style={{
-        "box-shadow": "0px 10px 30px 2px #00000010",
+        boxShadow: "0px 10px 30px 2px #00000010",
       }}
     >
       <div className="flex relative items-center rounded-lg bg-white p-2 justify-center h-[175px] w-[85%]">
@@ -48,6 +86,25 @@ const ProductCard = ({ data, productsToCompare, setProductsToCompare }) => {
         >
           {title}
         </div>
+        {isLiked ? (
+          <img
+            src={FilledHeart}
+            alt=""
+            className="h-6 w-6 cursor-pointer"
+            onClick={() => {
+              handleLike();
+            }}
+          />
+        ) : (
+          <img
+            src={EmptyHeart}
+            alt=""
+            className="h-6 w-6 cursor-pointer"
+            onClick={() => {
+              handleLike();
+            }}
+          />
+        )}
       </div>
       <div
         className="px-3 w-full flex flex-col justify-start

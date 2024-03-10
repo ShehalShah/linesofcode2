@@ -40,7 +40,10 @@ const Login = ({ setAuthType }) => {
       app_api
         .post("users/login", { email, password })
         .then((res) => {
+          console.log(res.data);
           localStorage.setItem("token", res.data.token);
+          localStorage.setItem("userId", JSON.stringify(res.data.id));
+          localStorage.setItem("watchlist", JSON.stringify(res.data.watchlist));
           navigate("/");
           toast.success("Login Successful");
         })

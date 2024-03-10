@@ -177,8 +177,8 @@ const ProductPage = () => {
         </div>
       </div>
 
-      <div class="bg-gray-100 border border-gray-300 rounded-lg p-6 m-8">
-        <h2 class="text-xl font-semibold mb-4">AI Generated Insights</h2>
+      <div className="bg-gray-100 border border-gray-300 rounded-lg p-6 m-8">
+        <h2 className="text-xl font-semibold mb-4">AI Generated Insights</h2>
         <div className="prose max-w-none">
           <ReactMarkdown>{ins}</ReactMarkdown>
         </div>
