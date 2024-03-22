@@ -1,9 +1,7 @@
-import 'package:comparify/server/gemini.dart';
 import 'package:comparify/server/product.dart';
 import 'package:flutter/material.dart';
 
 import '../models/product_item.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 
 //
 class ProductDetail extends StatefulWidget {
@@ -16,7 +14,7 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   // controller.getSingleProduct(url)
-  List<String> reviews = [
+  List<Object> reviews = [
     "This is my first laptop gifted by my father so its a special one❤READ MORE: Good quality product",
     "I am using this laptop for coding. nice product 😍READ MORE: Just wow!",
     "GoodREAD MORE: Fabulous!",
@@ -29,6 +27,17 @@ class _ProductDetailState extends State<ProductDetail> {
   ];
 
   final ScrollController _scrollController = ScrollController();
+  Product controller = Product();
+  Map<String, dynamic> decoded = {};
+  @override
+  void initState() {
+    // TODO: implement initState
+    controller.getSingleProduct(widget.item.url).then((value) {
+      decoded = value;
+      print("HELLO+${decoded}");
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
