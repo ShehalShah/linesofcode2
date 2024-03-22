@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/product_item.dart';
 
+
 class Product {
   Future<List<ProductItem>> getProduct(String query) async {
     Uri uri = Uri.parse('http://10.120.133.92:5001/api/products/search');
@@ -128,5 +129,33 @@ class Product {
     }
 
     return allFavProducts;
+  }
+
+  Future<Map<String, dynamic>> getSingleProduct(String url) async {
+    try {
+      Uri uri =
+          Uri.parse('http://10.120.133.92:5001/api/products/singleproduct');
+      final res = await http.post(
+        uri,
+        body: jsonEncode({"url": url}),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (res.statusCode == 200) {
+        final decoded = jsonDecode(res.body);
+        print(decoded);
+
+        return decoded;
+      } else {
+        print('Request failed with status: ${res.statusCode}');
+        // Return null or throw an exception if the request fails
+        throw Exception('Failed to load product');
+      }
+    } catch (e) {
+      // Catch any exceptions that occur during the HTTP request
+      print('Error: $e');
+      // Rethrow the exception to the caller
+      throw e;
+    }
   }
 }
