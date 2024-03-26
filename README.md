@@ -32,8 +32,13 @@ Features a clean and intuitive interface to ensure a seamless user experience, s
 
 Provides robust customer support in the form of a 24/7 available chatbot to assist users effectively with any issues or queries they may have.
 
-<!-- ## Screens
+## App Screens
 
 <p align="center">
-  <img src="assets/screens/intro_screen.jpg" height="600">
-</p> -->
+  <img src="app-screens/home-&-top-deals.jpg" height="600">
+  <img src="app-screens/filters.jpg" height="600">
+  <img src="app-screens/image-search.jpg" height="600">
+  <img src="app-screens/image-search-results.jpg" height="600">
+  <img src="app-screens/product.jpg" height="600">
+  <img src="app-screens/fav.jpg" height="600">
+</p>
