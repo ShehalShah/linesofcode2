@@ -20,6 +20,10 @@ Enables users to compare different products based on various scraped parameters,
 
 Analyzes data using AI to generate actionable insights, helping users make informed purchasing decisions.
 
+### Multilinguality
+
+Supports multiple languages to cater to a diverse user base, providing an inclusive experience for users worldwide.
+
 ### User-Friendly Interface
 
 Features a clean and intuitive interface to ensure a seamless user experience, simplifying the process of searching, comparing, and analyzing products.
