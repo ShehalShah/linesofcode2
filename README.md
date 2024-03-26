@@ -46,14 +46,14 @@ Provides robust customer support in the form of a 24/7 available chatbot to assi
 ## Website
 
 <p align="center">
-  <img src="web-screens/home.jpg" height="600">
-  <img src="web-screens/multilingual.jpg" height="600">
-  <img src="web-screens/top-deals.jpg" height="600">
-  <img src="web-screens/about.jpg" height="600">
-  <img src="web-screens/search-laptop.jpg" height="600">
-  <img src="web-screens/image-search-results.jpg" height="600">
-  <img src="web-screens/product.jpg" height="600">
-  <img src="web-screens/comparision.jpg" height="600">
-  <img src="web-screens/insight.jpg" height="600">
-  <img src="web-screens/customer-support.jpg" height="600">
+  <img src="web-screens/home.jpg">
+  <img src="web-screens/multilingual.jpg">
+  <img src="web-screens/top-deals.jpg">
+  <img src="web-screens/about.jpg">
+  <img src="web-screens/search-laptop.jpg">
+  <img src="web-screens/image-search-results.jpg">
+  <img src="web-screens/product.jpg">
+  <img src="web-screens/comparision.jpg">
+  <img src="web-screens/insight.jpg">
+  <img src="web-screens/customer-support.jpg">
 </p>
